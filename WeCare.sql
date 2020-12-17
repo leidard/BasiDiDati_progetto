@@ -73,7 +73,7 @@ CREATE TABLE Distretto(
 );
 
 CREATE TABLE Socio(
-    CF CHAR(16) PRIMARY KEY,
+    cf CHAR(16) PRIMARY KEY,
     nome VARCHAR(50) NOT NULL,
     cognome VARCHAR(50) NOT NULL,
     telefono VARCHAR(13) NOT NULL UNIQUE,
@@ -103,16 +103,17 @@ CREATE TABLE Socio(
         "SICILIA",
         "SARDEGNA"
     ) NOT NULL,
-    FOREIGN KEY(n_distretto, regione) REFERENCES Distretto(numero, regione) ON DELETE NO ACTION ON UPDATE
-    /* se elimino un presidente non voglio cancellare il distretto*/
+    FOREIGN KEY(n_distretto, regione) REFERENCES Distretto(numero, regione) ON DELETE NO ACTION ON UPDATE CASCADE 
+    /*non posso cancellare un distretto se ci sono soci ancora iscritti, devo prima spostare tutti i soci.
+    se sposto un distretto di regione (perché dovrei farlo, wtf?) tengo i soci associati(?)*/
 );
 
 CREATE TABLE Presidente(
     cf CHAR(16) PRIMARY KEY,
     voto TINYINT NOT NULL,
-    lode BIT NOT NULL,
+    lode BIT DEFAULT 0,
     FOREIGN KEY (cf) REFERENCES Socio(cf) ON DELETE CASCADE ON UPDATE CASCADE
-    /*se elimino un socio voglio elminare anche il presidente ez*/
+    /*se elimino un socio che fa il presidente lo elimino anche qua*/
 );
 
 CREATE TABLE Riunione(
@@ -141,20 +142,20 @@ CREATE TABLE Riunione(
     ) NOT NULL,
     n_distretto INT UNSIGNED NOT NULL,
     data DATE NOT NULL,
-    UNIQUE INDEX(regione, n_distretto, data)
-    /* ????  no  ????*/
+    UNIQUE(regione, n_distretto, data)
+    /*senza index*/
 );
 
 CREATE TABLE Presenza(
-    socio CHAR(16) NOT NULL,
-    riunione INT UNSIGNED NOT NULL,
+    socio CHAR(16), 
+    riunione INT UNSIGNED,
     PRIMARY KEY (socio, riunione),
-    FOREIGN KEY (socio) REFERENCES Socio(cf) ON DELETE NO ACTION ON UPDATE CASCADE,
-    FOREIGN KEY (riunione) REFERENCES Riunione(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (socio) REFERENCES Socio(cf) ON DELETE CASCADE ON UPDATE CASCADE, /*se in Socio cancello un socio ne cancello anche la lista delle presenze */
+    FOREIGN KEY (riunione) REFERENCES Riunione(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE Ente(
-    nome VARCHAR(50) NOT NULL,
+    nome VARCHAR(50),
     regione ENUM(
         "VALLE D'AOSTA",
         "PIEMONTE",
@@ -176,11 +177,11 @@ CREATE TABLE Ente(
         "CALABRIA",
         "SICILIA",
         "SARDEGNA"
-    ) NOT NULL,
+    ),
     indirizzo VARCHAR(100) NOT NULL,
     telefono VARCHAR(13) NOT NULL UNIQUE,
     descrizione VARCHAR(100) NOT NULL,
-    PRIMARY KEY(nome, regione),
+    PRIMARY KEY(nome, regione)
 );
 
 CREATE TABLE Richiesta(
@@ -211,8 +212,7 @@ CREATE TABLE Richiesta(
     creazione DATE NOT NULL,
     apertura DATE,
     chiusura DATE,
-    /* apertura e chiusura vanno senza not null, possono essere null*/
-    FOREIGN KEY(ente, regione) REFERENCES Ente(nome, regione) ON DELETE NO ACTION ON UPDATE CASCADE,
+    FOREIGN KEY(ente, regione) REFERENCES Ente(nome, regione) ON DELETE NO ACTION ON UPDATE CASCADE
 );
 
 CREATE TABLE Valutazione(
@@ -220,70 +220,69 @@ CREATE TABLE Valutazione(
     riunione INT UNSIGNED,
     PRIMARY KEY (richiesta, riunione),
     FOREIGN KEY (richiesta) REFERENCES Richiesta(id),
-    FOREIGN KEY (riunione) REFERENCES Riunione(id),
+    FOREIGN KEY (riunione) REFERENCES Riunione(id)
 );
 
-CREATE TABLE Prodotto (
+CREATE TABLE Prodotto(
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(30) NOT NULL,
     modello VARCHAR(30) NOT NULL,
-    descrizione VARCHAR(100),
+    descrizione VARCHAR(100)
 );
 
-CREATE TABLE VoceRichiesta (
-    prodotto INT UNSIGNED NOT NULL,
-    richiesta INT UNSIGNED NOT NULL,
+CREATE TABLE VoceRichiesta(
+    prodotto INT UNSIGNED,
+    richiesta INT UNSIGNED,
     quantita INT UNSIGNED NOT NULL,
     PRIMARY KEY (prodotto, richiesta),
     FOREIGN KEY prodotto REFERENCES Prodotto(id) ON DELETE NO ACTION ON UPDATE CASCADE,
-    FOREIGN KEY richiesta REFERENCES Richiesta(id) ON DELETE NO ACTION ON UPDATE CASCADE,
+    FOREIGN KEY richiesta REFERENCES Richiesta(id) ON DELETE NO ACTION ON UPDATE CASCADE
 );
 
-CREATE TABLE Azienda (
-    PIVA CHAR(11) PRIMARY KEY,
+CREATE TABLE Azienda(
+    piva CHAR(11) PRIMARY KEY,
     nome VARCHAR(50) NOT NULL,
     telefono VARCHAR(13) NOT NULL,
     indirizzo VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE Preventivo (
-    piva CHAR(11) NOT NULL,
-    richiesta INT UNSIGNED NOT NULL,
+CREATE TABLE Preventivo(
+    piva CHAR(11),
+    richiesta INT UNSIGNED,
     emissione DATE NOT NULL,
     PRIMARY KEY (piva, richiesta),
     FOREIGN KEY piva REFERENCES Azienda(piva) ON DELETE NO ACTION ON UPDATE CASCADE,
-    FOREIGN KEY richiesta REFERENCES Richiesta(id) ON DELETE NO ACTION ON UPDATE CASCADE,
+    FOREIGN KEY richiesta REFERENCES Richiesta(id) ON DELETE NO ACTION ON UPDATE CASCADE
 );
 
-CREATE TABLE VocePreventivo (
-    piva CHAR(11) NOT NULL,
-    /* lo richiamerei "azienda" mi descrive meglio secondo me*/
+CREATE TABLE VocePreventivo(
+    azienda CHAR(11),
+    richiesta INT UNSIGNED,
+    quantita INT UNSIGNED,
     prodotto INT UNSIGNED NOT NULL,
-    richiesta INT UNSIGNED NOT NULL,
-    quantita INT UNSIGNED NOT NULL,
     prezzo DECIMAL(8, 2) NOT NULL,
-    PRIMARY KEY (piva, richiesta, quantita),
-    FOREIGN KEY (piva, richiesta) REFERENCES Preventivo(piva, richiesta) ON DELETE CASCADE ON UPDATE CASCADE,
+    PRIMARY KEY (azienda, richiesta, quantita),
+    FOREIGN KEY (azienda, richiesta) REFERENCES Preventivo(piva, richiesta) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (richiesta, prodotto) REFERENCES VoceRichiesta(richiesta, prodotto) ON DELETE NO ACTION ON UPDATE CASCADE,
     /* OPPURE SET NULL ANCHE*/
 );
 
 CREATE TABLE Scheda(
+    numero INT UNSIGNED AUTO_INCREMENT PRIMARY KEY, /*tanto vale farla PK da sola, allora*/
     riunione INT UNSIGNED NOT NULL,
-    numero INT UNSIGNED NOT NULL,
-    /* qua ipoteticamente c'e' lo stesso problema di numero di distretto oppure ce ne freghiamo e facciamo un autoincrement e chi se ne fotte tanto non é importantissimo*/
     tipologia ENUM("BIANCA", "NULLA", "VALIDA") NOT NULL,
     preferenza INT UNSIGNED,
     /* qualche check qua nel caso tipologia sia valida  deve essere presente la prefenza (quindi non nulla) ????*/
+    CHECK ((tipologia='VALIDA' AND preferenza NOT NULL) OR ((tipologia='NULLA' OR tipologia='BIANCA') AND preferenza NULL)) /* così? */ 
     FOREIGN KEY preferenza REFERENCES Richiesta(id) ON DELETE NO ACTION ON UPDATE CASCADE,
-    FOREIGN KEY riunione REFERENCES Riunione(id) ON DELETE NO ACTION ON UPDATE CASCADE,
+    FOREIGN KEY riunione REFERENCES Riunione(id) ON DELETE NO ACTION ON UPDATE CASCADE
 );
 
 CREATE TABLE Vincitore(
-    piva CHAR(11) NOT NULL,
-    richiesta INT UNSIGNED NOT NULL,
+    piva CHAR(11),
+    richiesta INT UNSIGNED,
     dichiarazione DATE NOT NULL,
-    PRIMARY KEY(piva, richiesta) FOREIGN KEY (piva, richiesta) REFERENCES Preventivo(piva, richiesta) ON DELETE CASCADE ON UPDATE CASCADE,
+    PRIMARY KEY(piva, richiesta) FOREIGN KEY (piva, richiesta) REFERENCES Preventivo(piva, richiesta) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE Occasione(
@@ -314,7 +313,7 @@ CREATE TABLE Occasione(
         "SARDEGNA"
     ) NOT NULL,
     n_distretto INT UNSIGNED NOT NULL,
-    FOREIGN KEY (regione, n_distretto) REFERENCES Distretto(regione, numero) ON DELETE NO ACTION ON UPDATE CASCADE,
+    FOREIGN KEY (regione, n_distretto) REFERENCES Distretto(regione, numero) ON DELETE NO ACTION ON UPDATE CASCADE
 );
 
 CREATE TABLE Transazione(
@@ -347,50 +346,191 @@ CREATE TABLE Transazione(
     tipologia ENUM("DONAZIONE", "SPESA", "FATTURA") NOT NULL,
     donato_presso INT UNSIGNED,
     FOREIGN KEY (regione, n_distretto) REFERENCES Distretto(regione, numero) ON DELETE NO ACTION ON UPDATE CASCADE,
-    FOREIGN KEY donato_presso REFERENCES Occasione(id) ON DELETE NO ACTION ON UPDATE CASCADE,
+    FOREIGN KEY (donato_presso) REFERENCES Occasione(id) ON DELETE NO ACTION ON UPDATE CASCADE
 );
 
 CREATE TABLE Spesa(
-    transazione INT UNSIGNED NOT NULL PRIMARY KEY,
+    transazione INT UNSIGNED PRIMARY KEY,
     occasione INT UNSIGNED NOT NULL,
     giustificazione VARCHAR(255) NOT NULL,
     FOREIGN KEY transazione REFERENCES Transazione(id) ON DELETE NO ACTION ON UPDATE CASCADE,
-    FOREIGN KEY occasione REFERENCES Occasione(id) ON DELETE NO ACTION ON UPDATE CASCADE,
+    FOREIGN KEY occasione REFERENCES Occasione(id) ON DELETE NO ACTION ON UPDATE CASCADE
 );
 
 CREATE TABLE Fattura(
-    transazione INT UNSIGNED NOT NULL PRIMARY KEY,
-    progressivo INT UNSIGNED NOT NULL,
+    transazione INT UNSIGNED PRIMARY KEY,
+    progressivo INT UNSIGNED AUTO_INCREMENT NOT NULL,
     piva CHAR(11) NOT NULL,
     richiesta INT UNSIGNED NOT NULL,
-    FOREIGN KEY (piva, richiesta) REFERENCES Vincitore(piva, richiesta) ON DELETE NO ACTION ON UPDATE CASCADE,
+    FOREIGN KEY (piva, richiesta) REFERENCES Vincitore(piva, richiesta) ON DELETE NO ACTION ON UPDATE CASCADE
 );
 
+
+
+
+
+
+/*  NON PROVARE A CAMBIARE LA FORMATTAZIONE SOTTO O CAVARE SPAZI CHE TI MANGIO!!!!!!!!!!!!!!!!!!! SISTEMO DOPO, PER ORA LASCIA RESPIRARE CHE MI DAVA L'ANSIA.
+    SOPRATTUTTO NON METTERE IN COLONNA GLI ATTRIBUTI, MANNAGGIA A TE >_________< */
+
+
 -- Popolazione Distretto
-INSERT INTO
-    Distretto()
+INSERT INTO 
+    Distretto(nome, indirizzo, regione, presidente)
 VALUES
-    ("", "", "", "", "", "", ""),
+    ("Padova1", "Via Roma 23 Padova 35140", "VENETO", ""),
+    ("Padova2", "Via Firenze 10 Padova 35139", "VENETO", ""),
+    ("Roma1", "Piazza S. Marco 2 Roma 00010", "LAZIO", ""),
+    ("Latina1", "Via Battaglia 3 Latina 04010", "LAZIO", ""),
+    ("Bergamo1", "Via Rosa 52 Bergamo 24099", "LOMBARDIA", ""),
+    ("Firenze1", "Via Leopardi 3 Firenze 50012", "TOSCANA", ""),
+    ("Firenze2", "Via Roma 40 Firenze 50012", "TOSCANA", ""),
+    ("Milano1", "Via Dante 22 Milano 20010", "LOMBARDIA", ""),
+    ("Roma2", "Via Venezia 9 Roma 00016", "LAZIO", ""),
+    ("Salerno1", "Via Petrarca 6 Salerno 84070", "CAMPANIA", ""),
+    ("Matera1", "Via Dante 11 Matera 75062", "BASILICATA", ""),
+    
+    
+    
     -- Popolazione Socio
 INSERT INTO
-    Socio(
-        CF,
-        nome,
-        cognome,
-        telefono,
-        email,
-        data_nascita,
-        indirizzo
-    )
+    Socio(CF, nome, cognome, telefono, email, data_nascita, indirizzo, n_distretto, regione)
 VALUES
-    ("", "", "", "", "", "", ""),
-    -- Popolazione Presidente
+    ("RSSMRA70S02G224K", "Mario", "Rossi", "1234567890", "mariorossi@mail.com", "1970-11-02", "via Roma 1, Padova", "1", "VENETO"),
+    ("FJLTDP54A19C700X", "Fabio", "Del Santo", "1234567891", "fabiosanto@mail.com", "1974-04-22", "via Borghese 12 Roma", "3", "LAZIO"),
+    ("LTRMLL11A50E142B", "Mirella", "Latorre", "1234567892", "mire.lato@gmail.com", "1982-10-30", "via Ferro 8 Roma", "3-", "LAZIO"),
+    ("FJLTDP54A19C700X", "Fabio", "Del Santo", "1234567891", "fabiosanto@mail.com", "1970-11-02", "via Borghese 12 Roma", "3", "LAZIO"),
+    ("FJLTDP54A19C700X", "Fabio", "Del Santo", "1234567891", "fabiosanto@mail.com", "1970-11-02", "via Borghese 12 Roma", "3", "LAZIO"),
+    ("FJLTDP54A19C700X", "Fabio", "Del Santo", "1234567891", "fabiosanto@mail.com", "1970-11-02", "via Borghese 12 Roma", "3", "LAZIO"),
+    
+    
+    
+ -- Popolazione Presidente
 INSERT INTO
     Presidente(CF, voto, lode)
 VALUES
     ("", "", ""),
-    -- Popolazione Riunione
+    
+    
+-- Popolazione Riunione
 INSERT INTO
-    Riunione(id, regione, numero, data)
+    Riunione(regione, numero, data)
 VALUES
-    ("", "", "", "", "", "", ""),
+    ("", "", ""),
+    
+    
+    
+-- Popolazione Presenza
+INSERT INTO
+    Presenza(socio, riunione)
+VALUES
+    ("", ""),
+    
+    
+    
+-- Popolazione Ente
+INSERT INTO
+     Ente(nome, regione, indirizzo, telefono, descrizione)
+VALUES
+    ("", "", "", "", ""),
+    
+    
+    
+    
+-- Popolazione Richiesta
+INSERT INTO 
+    Richiesta(ente, regione, creazione, apertura, chiusura)
+VALUES
+    ("", "", "", "", ""),
+    
+    
+    
+-- Popolazione Valutazione
+INSERT INTO 
+    Valutazione(richiesta, riunione)
+VALUES
+    ("", ""),
+    
+    
+    
+-- Popolazione Prodotto
+INSERT INTO 
+    Prodotto(nome, modello, descrizione)
+VALUES
+    ("", "", ""),
+    
+    
+    
+-- Popolazione VoceRichiesta
+INSERT INTO 
+    VoceRichiesta(prodotto, richiesta, quantita)    
+VALUES
+    ("", "", ""),
+    
+    
+
+-- Popolazione Azienda
+INSERT INTO 
+    Azienda(piva, nome, telefono, indirizzo)    
+VALUES
+    ("", "", "", ""),
+    
+    
+-- Popolazione Preventivo
+INSERT INTO 
+    Preventivo(piva, richiesta, emissione)    
+VALUES
+    ("", "", ""),
+    
+    
+
+-- Popolazione VocePreventivo
+INSERT INTO 
+    VocePreventivo(azienda, prodotto, richiesta, quantita, prezzo)    
+VALUES
+    ("", "", "", "", ""),
+
+
+
+-- Popolazione Scheda
+INSERT INTO 
+    Scheda(riunione, tipologia, preferenza)    
+VALUES
+    ("", "", ""),
+
+
+-- Popolazione Vincitore
+INSERT INTO 
+    Vincitore(piva, richiesta, dichiarazione)    
+VALUES
+    ("", "", ""),
+
+-- Popolazione Occasione
+INSERT INTO 
+    Occasione(indirizzo, data, descrizione, regione, n_distretto)    
+VALUES
+    ("", "", "", "", ""),
+
+
+-- Popolazione Transazione
+INSERT INTO 
+    Transazione(time, importo, regione, n_distretto, tipologia, donato_presso)    
+VALUES
+    ("2018-10-19 10:55:23", "", "", "", "", ""),
+
+
+-- Popolazione Spesa
+INSERT INTO 
+    Spesa(transazione, occasione, giustificazione)    
+VALUES
+    ("", "", ""),
+    
+    
+    
+-- Popolazione Fattura
+INSERT INTO 
+    Fattura(transazione, piva, richiesta)    
+VALUES
+    ("", "", ""),
+
+
