@@ -388,24 +388,8 @@ VALUES
     ("1", "VENETO", "Padova1", "Via Roma 23, Padova 35140", ""),					
     ("2", "VENETO", "Padova2", "Via Firenze 10, Padova 35139", ""),
     ("3", "VENETO", "Venezia1", "Piazza S. Marco 10, Venezia 30122", ""),					
-    ("1", "LAZIO" "Roma1", "Via Del Sole, Roma 00010", ""),					
-    -- ("2", "LAZIO", "Latina1", "Via Battaglia 3 Latina 04010", ""),			
-    -- ("1", "LOMBARDIA", "Bergamo1", "Via Rosa 52 Bergamo 24099", ""),				
-    -- ("1", "TOSCANA", "Firenze1", "Via Leopardi 3 Firenze 50012", ""),			
-    -- ("2", "TOSCANA", "Firenze2", "Via Roma 40 Firenze 50012", ""),				
-    -- ("2", "LOMBARDIA", "Milano1", "Via Dante 22 Milano 20010", ""),				
-    -- ("3", "LAZIO", "Roma2", "Via Venezia 9 Roma 00016", ""),						
-    -- ("1", "CAMPANIA", "Salerno1", "Via Petrarca 6 Salerno 84070", ""),	!		
-    -- ("1", "BASILICATA" "Matera1", "Via Dante 11 Matera 75062", ""),		!		
-    
-    3 veneto 8 per 1 8 per 2 8 per 3
-    1 lazio 16
-    
-    1 lombardia
-    1 toscana
-    /* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
-    /*Riduciamo i distretti a 5/6 così possiamo fare più riunioni senza un listone infinito. Vanno sistemati i membri che avevo messo ufff*/
-    
+    ("1", "LAZIO" "Roma1", "Via Del Sole, Roma 00010", "");				
+       
     -- Popolazione Socio
 INSERT INTO
     Socio(CF, nome, cognome, telefono, email, data_nascita, indirizzo, n_distretto, regione)
