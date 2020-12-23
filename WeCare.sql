@@ -86,7 +86,7 @@ CREATE TABLE Socio(
         "VALLE D'AOSTA",
         "PIEMONTE",
         "LIGURIA",
-        'LOMBARDIA',
+        "LOMBARDIA",
         "TRENTINO-ALTO ADIGE",
         "VENETO",
         "FRIULI-VENEZIA GIULIA",
@@ -165,7 +165,7 @@ CREATE TABLE Ente(
         "VALLE D'AOSTA",
         "PIEMONTE",
         "LIGURIA",
-        'LOMBARDIA',
+        "LOMBARDIA",
         "TRENTINO-ALTO ADIGE",
         "VENETO",
         "FRIULI-VENEZIA GIULIA",
@@ -196,7 +196,7 @@ CREATE TABLE Richiesta(
         "VALLE D'AOSTA",
         "PIEMONTE",
         "LIGURIA",
-        'LOMBARDIA',
+        "LOMBARDIA",
         "TRENTINO-ALTO ADIGE",
         "VENETO",
         "FRIULI-VENEZIA GIULIA",
@@ -301,7 +301,7 @@ CREATE TABLE Vincitore(
 );
 
 CREATE TABLE Occasione(
-    id INT UNSIGNED PRIMARY KEY,
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     indirizzo VARCHAR(100) NOT NULL,
     data DATE NOT NULL,
     descrizione VARCHAR(255) NOT NULL,
@@ -339,7 +339,7 @@ CREATE TABLE Transazione(
         "VALLE D'AOSTA",
         "PIEMONTE",
         "LIGURIA",
-        'LOMBARDIA',
+		"LOMBARDIA",
         "TRENTINO-ALTO ADIGE",
         "VENETO",
         "FRIULI-VENEZIA GIULIA",
@@ -381,6 +381,9 @@ CREATE TABLE Fattura(
 );
 
 
+
+
+
 -- Popolazione Distretto
 INSERT INTO
     Distretto(numero, regione, nome, indirizzo, presidente)
@@ -389,7 +392,11 @@ VALUES
     ("2", "VENETO", "Padova2", "Via Firenze 10, Padova 35139", ""),
     ("3", "VENETO", "Venezia1", "Piazza S. Marco 10, Venezia 30122", ""),					
     ("1", "LAZIO" "Roma1", "Via Del Sole, Roma 00010", "");				
-       
+    
+    3 veneto: 9 membri in 1, 10 in 2, 8 in 3
+    1 lazio: 16 membri
+    
+ 
     -- Popolazione Socio
 INSERT INTO
     Socio(CF, nome, cognome, telefono, email, data_nascita, indirizzo, n_distretto, regione)
@@ -436,7 +443,7 @@ VALUES
     ("JSADNI78W30V420E", "Jasmine", "Dinzeo", "+39 3696969804", "jasmdinz@mail.com", "1978-04-16", "via Romolo 31, Padova", "1", "VENETO"),
     ("SBIRSU59D20V501B", "Isabella", "Russo", "+39 3787596400", "isarusso@mail.com", "1959-12-14", "via Canali 03, Padova", "2", "VENETO"),
 	("VLALFE66E44E993V", "Valentino", "Elfino", "+39 3641402872", "valeelf@mail.com", "1966-06-06", "via Peonia 10, Roma", "1", "LAZIO"),
-	("VLADNE85A90V631U", "Valentino", "Denni", "+39 3898989574", "valdenni@mail.com", "1985-06-18", "via Padova 30, Venezia", "3", "VENETO"),
+	("VLADNE85A90V631U", "Valentino", "Denni", "+39 3898989574", "valdenni@mail.com", "1985-06-18", "via Padova 30, Venezia", "3", "VENETO");
 
 
     
@@ -450,52 +457,25 @@ VALUES
     ("ANDTRO69B42E700J", "110", "0"); -- Veneto3
   
     
-    
+    --3 CICLI DI RIUNIONI=12 RIUNIONI quindi 12 RICHIESTE APPROVATE
     -- Popolazione Riunione
 INSERT INTO
     Riunione(regione, numero, data)
 VALUES
-	("VENETO", "1", "2020-09-01"),1
-    ("VENETO", "2", "2020-09-01"),2
-    ("VENETO", "3", "2020-09-01"),3
-    ("LAZIO", "1", "2020-09-01"),4
+    1("VENETO", "1", "2020-10-15"),
+    2("VENETO", "2", "2020-10-15"),
+    3("VENETO", "3", "2020-10-15"),
+    4("LAZIO", "1", "2020-10-15"),
     
-    ("VENETO", "1", "2020-09-15"),5
-    ("VENETO", "2", "2020-09-15"),6
-    ("VENETO", "3", "2020-09-15"),7
-    ("LAZIO", "1", "2020-09-15"),8
+    5("VENETO", "1", "2020-11-01"),
+    6("VENETO", "2", "2020-11-01"),
+    7("VENETO", "3", "2020-11-01"),
+    8("LAZIO", "1", "2020-11-01"),
     
-    ("VENETO", "1", "2020-10-01"),9
-    ("VENETO", "2", "2020-10-01"),10
-    ("VENETO", "3", "2020-10-01"),11
-    ("LAZIO", "1", "2020-10-01"),12
-    
-    ("VENETO", "1", "2020-10-15"),13
-    ("VENETO", "2", "2020-10-15"),14
-    ("VENETO", "3", "2020-10-15"),15
-    ("LAZIO", "1", "2020-10-15"),16
-    
-    ("VENETO", "1", "2020-11-01"),17
-    ("VENETO", "2", "2020-11-01"),18
-    ("VENETO", "3", "2020-11-01"),19
-    ("LAZIO", "1", "2020-11-01"),20
-    
-    ("VENETO", "1", "2020-11-16"),21
-    ("VENETO", "2", "2020-11-16"),22
-    ("VENETO", "3", "2020-11-16"),23
-    ("LAZIO", "1", "2020-11-16"),24
-    
-    ("VENETO", "1", "2020-12-01"),25
-    ("VENETO", "2", "2020-12-01"),26
-    ("VENETO", "3", "2020-12-01"),27
-    ("LAZIO", "1", "2020-12-01"),28
-    
-    ("VENETO", "1", "2020-12-15"),29
-    ("VENETO", "2", "2020-12-15"),30
-    ("VENETO", "3", "2020-12-15"),31
-    ("LAZIO", "1", "2020-12-15");32
-    
-    
+    9("VENETO", "1", "2020-11-16"),
+    10("VENETO", "2", "2020-11-16"),
+    11("VENETO", "3", "2020-11-16"),
+    12("LAZIO", "1", "2020-11-16");   
     
     
     -- Popolazione Presenza
@@ -587,29 +567,45 @@ VALUES
     ("VENETO", "Azienda Ospedaliera di Padova", "+39 350874827", "Via Venezia 68, 78864, Padova"),
     ("VENETO", "Azienda Ospedaliera di Venezia", "+39 344405107", "Via San Girolamo 56, 10637, Venezia"),
     ("LAZIO", "Mensa Papa Giovanni", "+39 355667963", "Via Padre Pio 45, 24678, Roma", "Mensa popolare per senzatetto"),
-    ("LAZIO", "Caritas San Francesco", "+39 370138344", "Via Cesare Beccaria 33, 94672, Roma"),
-    ("VENETO", "Opera San Giovanni", "+39 341315440", "Via San Francesco 22, 21534, Padova", "Residenza per senzatetto"),
-    ("LAZIO", "Azienda Ospedaliera di Roma", "+39 316733072", "Via 30 Febbraio 2, 62771, Roma"),
-    ("LAZIO", "Medici senza frontiere gruppo di Roma", "+39 392292896", "Via Guizza 93, 32768, Roma"),
-    ("LAZIO", "Caritas Roma", "+39 391156326", "Via Padova 64, 31358, Roma"),
     ("LAZIO", "Casa di Cura \"San Gennaro\"", "+39 372111710", "Via Domenica 93, 25072, Roma"),
-    ("VENETO", "Cucine Popolari S. Rita", "+39 355667963", "Via Padre Pio 45, 24678, Padova"),
+	("LAZIO", "Caritas San Francesco", "+39 3855554620", "Via Parma 08, 25072, Roma"),
+    ("VENETO", "Opera San Giovanni", "+39 341315440", "Via San Francesco 22, 21534, Padova", "Residenza per senzatetto"),
     ("VENETO", "Casa Elisabetta", "+39 355667963", "Via Padre Pio 45, 24678, Venezia", "Dimora per senzatetto"),
     ("VENETO", "Canile di Padova", "+39 3048293029", "Via Michelangelo 3, 23043, Padova"),
-    ("VENETO", "Medici senza frontiere gruppo di Padova", "+39 392292896", "Via Guizza 93, 32768, Roma"),
-    ("VENETO", "Istituto Oncologico di Padova", "+39 392292896", "Via Gattamelata 93, 32768, Padova");
-    
-    
-    
+    ("VENETO", "Medici senza frontiere gruppo di Padova", "+39 392292896", "Via Guizza 93, 32768, Roma"), 
+    ("LAZIO", "Azienda Ospedaliera di Roma", "+39 316733072", "Via 30 Febbraio 2, 62771, Roma"),
+    ("VENETO", "Cucine Popolari S. Rita", "+39 355667963", "Via Padre Pio 45, 24678, Padova"),
+    ("VENETO", "Istituto Oncologico di Padova", "+39 392292896", "Via Gattamelata 93, 32768, Padova"),
+    ("LAZIO", "Caritas Roma", "+39 3333333847", "Via Margherita 01, 32768, Roma");
+    -- HANNO FATTO TUTTI UNA RICHIESTA, TRANNE Azienda Ospedaliera di Venezia CHE NE HA FATTE 2
+
+
     -- Popolazione Richiesta
 INSERT INTO
     Richiesta(ente, regione, creazione, apertura, chiusura)
 VALUES
-    ("Casa di Riposo \"Santa Maria\" Padova", "VENETO", "2020-08-11", "", ""),
-    ("Azienda Ospedaliera di Padova", "VENETO", "2020-08-11", "", ""),
+    ("Casa di Riposo \"Santa Maria\" Padova", "VENETO", "2020-10-11", "2020-10-15", "2020-11-15"),	1 
+    ("Azienda Ospedaliera di Padova", "VENETO", "2020-10-11", "2020-10-15", "2020-11-15"),			2
+    ("Azienda Ospedaliera di Venezia", "VENETO", "2020-10-12", "2020-10-15", "2020-11-15"),			3
+    ("Mensa Papa Giovanni", "LAZIO", "2020-10-14", "2020-10-15", "2020-11-15"),						4
+    ("Casa di Cura \"San Gennaro\"", "LAZIO", "2020-10-14", "2020-11-01", "2020-12-01"),			5	--ESEMPIO DI RICHIESTA CHE è STATA VOTATA MENO IMPORTANTE DELLA MENSA E VIENE APPROVATA ALLA RIUNIONE SUCCESSIVA (2 VOTAZIONI PER QUESTA RICHIESTA)
     
+    ("Caritas San Francesco", "LAZIO", "2020-10-18", "2020-11-01" "2020-12-01"),					6
+    pd("Opera San Giovanni", "VENETO", "2020-10-22", "2020-11-01" "2020-12-01"),					7
+    ven("Casa Elisabetta", "VENETO", "2020-10-27", "2020-11-01" "2020-12-01"),						8
+    ("Canile di Padova", "VENETO", "2020-10-29", "2020-11-01" "2020-12-01"),						9
+    ("Medici senza frontiere gruppo di Padova", "VENETO", "2020-10-29"),							10	--ESEMPIO DI RICHIESTA VECCHIA VOTATA 2 VOLTE (RIUNIONE 11-01 E 11-16), MA MAI APPROVATA 
     
-    
+    ("Azienda Ospedaliera di Roma", "LAZIO", "2020-11-02", "2020-11-16" "2020-12-16"),				11
+    pd("Cucine Popolari S. Rita", "VENETO", "2020-11-02", "2020-11-16" "2020-12-16"),				12
+    ("Istituto Oncologico di Padova", "VENETO", "2020-11-02", "2020-11-16" "2020-12-16"),			13
+    ("Azienda Ospedaliera di Venezia", "VENETO", "2020-11-12", "2020-11-16", "2020-12-16")			14
+    	
+    ("Caritas Roma", "LAZIO", "2020-11-19");														15 --ESEMPIO DI RICHIESTA NUOVA CHE DEVE ANCORA ESSERE DISCUSSA		
+	
+   
+   
+   			
     -- Popolazione Valutazione
 INSERT INTO
     Valutazione(richiesta, riunione)
@@ -622,24 +618,36 @@ VALUES
 INSERT INTO
     Prodotto(nome, specifiche)
 VALUES
-    ("Mascherina filtrante", "FFP2"),
-    ("Mascherina filtrante", "FFP3"),
-    ("Letto", "singolo, piegevole, con barre laterali, asta sollevammalati e ruote piroettanti con freno"),
-    ("Materasso", "Ipoallergenico"),
-    ("Materasso", "Antidecubito"),
-    ("Microonde", "Potenza fino a 900W"),
-    ("Piumone", "90x200, ipoallergenico"),
-    ("Sacco a pelo", "Comfort 0 gradi"),
-    ("Antistaminico", "Classe A"),
-    ("Sedia a rotelle elettrica", "Peso max 150Kg"),
-    ("Pannoloni anziani"),
-    ("Pasta", "Secca, in pacchi da 1KG"),
-    ("Fagioli", "In lattina"),
-    ("Latte", "UHT"),
-    ("Latte in polvere", "per neonati, 6 mesi"),
-    ("Pannolini per neonati"),
-    ("Stufa elettrica", "Alogena a basso consumo"),
-    ("Cibo per cani", "Scatolette gastrointestinal"),
+    1("Mascherina filtrante", "FFP2"),
+    2("Mascherina filtrante", "FFP3"),
+    3("Letto singolo", "Piegevole, con barre laterali, asta sollevammalati e ruote piroettanti con freno"),
+    4("Materasso", "Ipoallergenico"),
+    5("Materasso", "Antidecubito"),
+    6("Microonde", "Potenza fino a 900W"),
+    7("Piumone", "90x200, ipoallergenico"),
+    8("Sacco a pelo", "Comfort 0 gradi"),
+    9("Antistaminico", "Classe A"),
+    10("Sedia a rotelle elettrica", "Peso max 150Kg"),
+    11("Pannoloni anziani"),
+    12("Pasta", "Secca, 1Kg"),
+    13("Fagioli", "In lattina"),
+    14("Latte", "1L, UHT"),
+    15("Latte in polvere", "per neonati, 6 mesi"),
+    16("Pannolini per neonati"),
+    17("Stufa elettrica", "Alogena a basso consumo"),
+    18("Cibo per cani", "Scatolette gastrointestinal"),
+    19("Sollevatore pazienti", "Elettrico, fino a 135Kg"),
+    20("Camice operatorio", "Taglia M"),
+    21("Tuta protettiva integrale", "Omologazione CE-DPI di I categoria, monouso in TNT di PP), 40 G/MQ"),
+    22("Bombola ossigeno monouso", "Ossigeno 99,5% compresso a 110 bar per ossigenoterapia da 0,95 lt"),
+    23("Frigorifero", "Classe A++, >200 litri"),
+    24("Sanificatore ambienti a ozono"),
+    25("Defibrillatore DAE semiautomatico", "Conforme alle linee guida 2010"),
+    26("Vaccino", "Meningococco B"),
+    27("Vaccino", "MPRV"),
+     
+    
+    
 
     
     
@@ -647,7 +655,35 @@ VALUES
 INSERT INTO
     VoceRichiesta(prodotto, richiesta, quantita)
 VALUES
-    ("", "", "");
+    ("10", "1", "27"), 
+    ("11", "1", "2000"),
+    
+    ("19","2","20"),
+    ("20","2","55"),
+    ("21","2","500"),
+    
+    ("2","3","5000"),
+    ("21","3","3050"),
+    ("22","3","1000"),
+    
+    ("12","4","300"),
+    ("23","4","3"),
+    ("6", "4", "5"),
+    ("13", "4", "400"),
+    
+    ("26", "5", "250"),
+    ("27", "5", "250"),
+    ("2", "5", "400"),
+    
+    ("","6",""),
+    ("","6",""),
+    
+    
+    
+    
+    
+    
+    
     
     
     -- Popolazione Azienda
@@ -655,20 +691,21 @@ INSERT INTO
     Azienda(piva, nome, telefono, indirizzo)
 VALUES
     ("8238401722", "FarmaPh s.r.l.", "+39 310874827", "Via Marco Polo 3, 53530, Padova"),
-    ("6699331325", "Arcaplanet", "+39 310820827", "Via Venezia 68, 78864, Angri"),
+    ("6699331325", "Arcaplanet", "+39 310820827", "Via Napoli 68, 78864, Padova"),
     ("7607418259", "Grandi Magazzini Ferrarin s.r.l.", "+39 340405107", "Via San Girolamo 56, 10637, Roma"),
     ("8749297545", "Supermercati Hello", "+39 355667963", "Via Padre Pio 45, 24678, Roma"),
-    ("1657677425", "Decathlon s.p.a.", "+39 370138344", "Via Cesare Beccaria 33, 94672, Milano"),
+    ("1657677425", "Decathlon s.p.a.", "+39 370138344", "Via Cesare Beccaria 33, 94672, Venezia"),
     ("2979137105", "Pam Panorama S.p.A.", "+39 341315440", "Via San Francesco 22, 21534, Venezia"),
     ("5121672285", "Plasmon S.p.A.", "+39 306733072", "Via 30 Febbraio 2, 62771, Verona"),
     ("9416760333", "Sassari Healthcare s.a.s.", "+39 343865550", "Via Vandolmo 65, 87431, Latina"),
     ("9416760333", "Foodish S.p.A.", "+39 3000055501", "Via Parigi 36, 87431, Latina"),
     ("5735548958", "Friulani Medical s.p.a.", "+39 392292896", "Via Guizza 93, 32768, Trento"),
-    ("1448068341", "Trainspotting Foods s.r.l.", "+39 391156326", "Via Padova 64, 31358, Firenze"),
-    ("9619512572", "Escher Bevande s.p.a.", "+39 354289884", "Via Emili 37, 62456, Treviso"),
-    ("1021583491", "Hollywood Food Inc. s.p.a.", "+39 372111710", "Via Roma 93, 25072, Milano");
+    ("1448068341", "Trainspotting Foods s.r.l.", "+39 391156326", "Via Colombo 64, 31358, Padova"),
+    ("9619512572", "Escher Bevande s.p.a.", "+39 354289884", "Via Primavera 37, 62456, Treviso"),
+    ("1021583491", "Hollywood Food Inc. s.p.a.", "+39 372111710", "Via Sicilia 93, 25072, Roma");
     
     
+    --I PREVENTIVI SONO 16, DI CUI 12 SARANNO VINCITORI
     -- Popolazione Preventivo
 INSERT INTO
     Preventivo(piva, richiesta, emissione)
@@ -689,7 +726,7 @@ INSERT INTO
 VALUES
     ("", "", "");
     
-    
+    --I VINCITORI SONO 12
     -- Popolazione Vincitore
 INSERT INTO
     Vincitore(piva, richiesta, dichiarazione)
@@ -701,34 +738,76 @@ VALUES
 INSERT INTO
     Occasione(indirizzo, data, descrizione, regione, n_distretto)    
 VALUES
-    ("Via Padre Pio, 11 Padova", "2020-10-11", "Fiera del volontariato", "VENETO", "1"),
-    ("Via Roma, Padova", "2020-10-12", "Banchetto promozionale", "VENETO", "1"),
-    ("Piazza Roma, Padova", "2020-10-14", "Banchetto promozionale", "VENETO", "1"),
-    ("Via Padre Pio, 11 Padova", "2020-10-17", "Fiera del volontariato", "VENETO", "1"),
-    ("Via Padre Pio, 11 Padova", "2020-10-18", "Fiera del volontariato", "VENETO", "1"),
-    ("Via Duomo, 32 Padova", "2020-10-18", "Polo Fieristico di Venezia", "VENETO", "3"),
-    ("Via Romagna, 41 Venezia", "2020-10-19", "Polo Fieristico di Venezia", "VENETO", "3"),
-    ("Via Briosco, 17 Roma", "2020-10-19", "Polo Fieristico di Roma", "LAZIO", "3"),
+	1("Via Torino, 14A", "2020-11-08", "Fiera campionaria", "LAZIO", "1"),
+    2("Via Padre Pio, 11 Padova", "2020-11-14", "Fiera del volontariato", "VENETO", "1"),
+    3("Via Roma, Padova", "2020-11-15", "Banchetto promozionale", "VENETO", "1"),
+    4("Prato della Valle, Padova", "2020-11-21", "Banchetto promozionale", "VENETO", "1"),
+    5("Corso Milano, Roma", "2020-11-21", "Banchetto promozionale", "LAZIO", "1")
+    6("Via Padre Pio, 11 Padova", "2020-11-22", "Fiera del volontariato", "VENETO", "1"),
+    7("Via Padre Pio, 11 Padova", "2020-11-28", "Fiera del volontariato", "VENETO", "2"),
+    8("Via Romagna, 41 Venezia", "2020-11-28", "Polo Fieristico di Venezia", "VENETO", "3"),
+    9("San Pietro, Roma", "2020-11-28", "Promozione in strada con volantinaggio", "LAZIO", "1"),
+    10("Via Romagna, 41 Venezia", "2020-11-29", "Polo Fieristico di Venezia", "VENETO", "3");
 
-    
-    
-    
     
     -- Popolazione Transazione
 INSERT INTO
     Transazione(time, importo, regione, n_distretto, tipologia, donato_presso)    
-VALUES
-    ("2018-10-19 10:55:23", "", "VENETO", "1", "", ""),
-    ("2018-10-19 10:55:23", "", "VENETO", "2", "", ""),
-    ("2018-10-19 10:55:23", "", "VENETO", "3", "", ""),
-    ("2018-10-19 10:55:23", "", "LAZIO", "1", "", ""),
+VALUES --tipologia: "DONAZIONE", "SPESA", "FATTURA"
+    1("2020-11-05 10:00:41", "50", "LAZIO", "1", "SPESA"),
+    2("2020-11-05 10:20:02", "80", "LAZIO", "1", "SPESA"),
+    3("2020-11-08 22:51:13", "223", "LAZIO", "1", "DONAZIONE", "1"),
+    
+    4("2020-11-10 09:41:20", "20", "VENETO", "1", "SPESA"),
+    5("2020-11-10 11:07:41", "55", "VENETO", "1", "SPESA"),
+    6("2020-11-14 21:34:05", "302.5", "VENETO", "1", "DONAZIONE", "2"),
+    
+    7("2020-11-15 20:57:12", "55.32", "VENETO", "1", "DONAZIONE", "3"),
+    
+    8("2020-11-21 21:11:20", "72.90", "VENETO", "1", "DONAZIONE", "4"),
+    
+    9("2020-11-21 21:37:49", "43", "LAZIO", "1", "DONAZIONE", "5"),
+    
+    10("2020-11-22 06:21:06", "62", "VENETO", "1", "SPESA"),
+	11("2020-11-22 06:30:30", "42", "VENETO", "1", "SPESA"),
+    12("2020-11-22 21:59:47", "113.20", "VENETO", "1", "DONAZIONE", "6"),
+    
+    13("2020-11-25 17:03:00", "122", "VENETO", "2", "SPESA"),
+    14("2020-11-25 17:07:03", "98", "VENETO", "3", "SPESA"),
+    15("2020-11-26 14:16:18", "38", "VENETO", "2", "SPESA"),
+    16("2020-11-28 22:41:03", "341", "VENETO", "2", "DONAZIONE", "7"),
+    17("2020-11-28 22:48:38", "261.10", "VENETO", "3", "DONAZIONE", "8"),
+    
+    18("2020-11-28 23:05:11", "63", "LAZIO", "1", "DONAZIONE", "9"),
+    
+    19("2020-11-29 05:57:18", "45", "VENETO", "3", "SPESA"),
+    20("2020-11-29 06:45:32", "110", "VENETO", "3", "SPESA"),
+    21("2020-11-29 22:03:47", "143", "VENETO", "3", "DONAZIONE", "10");
     
     
     -- Popolazione Spesa
 INSERT INTO
     Spesa(transazione, occasione, giustificazione)
 VALUES
-    ("", "", "");
+    ("1", "1", "Quota di partecipazione fiera"),
+    ("2", "1", "Costi di allestimento stand"),
+    
+    ("4", "2", "Quota di partecipazione fiera"),
+    ("5", "2", "Costi di allestimento stand"),
+    
+    ("10", "6", "Contributo fiera"),
+    ("11", "6", "Costi di stampa volantini"),
+    
+    ("13", "7", "Costi di allestimento stand"),
+    ("14", "8", "Costi di allestimento stand"),
+    ("15", "7", "Costi di stampa volantini"),
+    
+   
+    ("19", "10", "Quota di partecipazione fiera"),
+    ("20", "10", "Costi di noleggio bancarella");
+    
+    
+    
     
     
     -- Popolazione Fattura
