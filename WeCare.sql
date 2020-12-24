@@ -645,6 +645,10 @@ VALUES
     25("Defibrillatore DAE semiautomatico", "Conforme alle linee guida 2010"),
     26("Vaccino", "Meningococco B"),
     27("Vaccino", "MPRV"),
+    28("Crocchette Carne Cani", "Secco Carne 1Kg"),
+    29("Crocchette Pesce Cani", "Secco Pesce 1Kg"),
+    30("Sacco Patate", "1Kg"),
+    31("Sedia a rotelle"),
      
     
     
@@ -675,16 +679,47 @@ VALUES
     ("27", "5", "250"),
     ("2", "5", "400"),
     
-    ("","6",""),
-    ("","6",""),
+    ("12", "6", "80"),
+    ("15", "6", "45"),
+    ("16", "6", "60"),
+    ("13", "6", "40"),
+
+    ("8", "7", "50"),
+    ("4", "7", "14"),
+    ("5", "7", "6"),
+
+    ("25", "8", "1"), -- Casa elisabetta
+    ("24", "8", "2"),
+    ("10", "8", "3"),
+
+    ("18", "9", "800"), -- Canile di padova
+    ("17", "9", "3"),
+    ("28", "9", "200"),
+    ("29", "9", "200"),
+
+    ("26", "10", "1200"), -- Medici senza frontiere
+    ("27", "10", "1500"),
+    ("22", "10", "450"),
     
-    
-    
-    
-    
-    
-    
-    
+    ("24", "11", "5"), --Azienda Ospedaliera di Roma
+    ("20", "11", "200"),
+    ("3", "11", "56"),
+
+    ("12", "12", "900"), -- Cucine Popolari S. Rita
+    ("30", "12", "50"),
+    ("13", "12", "300"),
+
+    ("3", "13", "23"), -- Istituto Oncologico di Padova
+    ("19", "13", "5"),
+    ("20", "13", "150"),
+
+    ("24", "14", "10"), -- Azienda Ospedaliera di Venezia
+    ("25", "14", "1"),
+    ("31", "14", "30"),
+
+    ("7", "15", "46"), -- Caritas Roma
+    ("6", "15", "5"),
+    ("1", "15", "2000");    
     
     -- Popolazione Azienda
 INSERT INTO
