@@ -590,19 +590,18 @@ VALUES
     ("Mensa Papa Giovanni", "LAZIO", "2020-10-14", "2020-10-15", "2020-11-15"),						4
     ("Casa di Cura \"San Gennaro\"", "LAZIO", "2020-10-14", "2020-11-01", "2020-12-01"),			5	--ESEMPIO DI RICHIESTA CHE è STATA VOTATA MENO IMPORTANTE DELLA MENSA E VIENE APPROVATA ALLA RIUNIONE SUCCESSIVA (2 VOTAZIONI PER QUESTA RICHIESTA)
     
-    ("Caritas San Francesco", "LAZIO", "2020-10-18", "2020-11-01" "2020-12-01"),					6
-    pd("Opera San Giovanni", "VENETO", "2020-10-22", "2020-11-01" "2020-12-01"),					7
-    ven("Casa Elisabetta", "VENETO", "2020-10-27", "2020-11-01" "2020-12-01"),						8
-    ("Canile di Padova", "VENETO", "2020-10-29", "2020-11-01" "2020-12-01"),						9
-    ("Medici senza frontiere gruppo di Padova", "VENETO", "2020-10-29"),							10	--ESEMPIO DI RICHIESTA VECCHIA VOTATA 2 VOLTE (RIUNIONE 11-01 E 11-16), MA MAI APPROVATA 
+    pd("Opera San Giovanni", "VENETO", "2020-10-22", "2020-11-01" "2020-12-01"),					6
+    ven("Casa Elisabetta", "VENETO", "2020-10-27", "2020-11-01" "2020-12-01"),						7
+    ("Canile di Padova", "VENETO", "2020-10-29", "2020-11-01" "2020-12-01"),						8
+    ("Medici senza frontiere gruppo di Padova", "VENETO", "2020-10-29"),							9	--ESEMPIO DI RICHIESTA VECCHIA VOTATA 2 VOLTE (RIUNIONE 11-01 E 11-16), MA MAI APPROVATA 
     
-    ("Azienda Ospedaliera di Roma", "LAZIO", "2020-11-02", "2020-11-16" "2020-12-16"),				11
-    pd("Cucine Popolari S. Rita", "VENETO", "2020-11-02", "2020-11-16" "2020-12-16"),				12
-    ("Istituto Oncologico di Padova", "VENETO", "2020-11-02", "2020-11-16" "2020-12-16"),			13
-    ("Azienda Ospedaliera di Venezia", "VENETO", "2020-11-12", "2020-11-16", "2020-12-16")			14
+    ("Azienda Ospedaliera di Roma", "LAZIO", "2020-11-02", "2020-11-16" "2020-12-16"),				10
+    pd("Cucine Popolari S. Rita", "VENETO", "2020-11-02", "2020-11-16" "2020-12-16"),				11
+    ("Istituto Oncologico di Padova", "VENETO", "2020-11-07", "2020-11-16" "2020-12-16"),			12
+    ("Azienda Ospedaliera di Venezia", "VENETO", "2020-11-12", "2020-11-16", "2020-12-16"),			13
     	
-    ("Caritas Roma", "LAZIO", "2020-11-19");														15 --ESEMPIO DI RICHIESTA NUOVA CHE DEVE ANCORA ESSERE DISCUSSA		
-	
+    ("Caritas Roma", "LAZIO", "2020-11-19"),			--mai aperte											14 --ESEMPIO DI RICHIESTA NUOVA CHE DEVE ANCORA ESSERE DISCUSSA		
+	("Caritas San Francesco", "LAZIO", "2020-11-30");	--quindi non hanno preventivi								15 --ESEMPIO DI RICHIESTA NUOVA CHE DEVE ANCORA ESSERE DISCUSSA		
    
    
    			
@@ -659,85 +658,82 @@ VALUES
 INSERT INTO
     VoceRichiesta(prodotto, richiesta, quantita)
 VALUES
-    ("10", "1", "27"), 
+    ("10", "1", "27"), -- casa di riposo s. maria pd
     ("11", "1", "2000"),
     
-    ("19","2","20"),
+    ("19","2","20"), -- az osped padova
     ("20","2","55"),
     ("21","2","500"),
     
-    ("2","3","5000"),
+    ("2","3","5000"), --az osped venezi
     ("21","3","3050"),
     ("22","3","1000"),
     
-    ("12","4","300"),
+    ("12","4","300"), -- mensa papa giovanni roma
     ("23","4","3"),
     ("6", "4", "5"),
     ("13", "4", "400"),
     
-    ("26", "5", "250"),
+    ("26", "5", "250"),-- casa di cura s. gennaro laz
     ("27", "5", "250"),
     ("2", "5", "400"),
     
-    ("12", "6", "80"),
-    ("15", "6", "45"),
-    ("16", "6", "60"),
-    ("13", "6", "40"),
+    ("8", "6", "50"), --opera s govanni pd
+    ("4", "6", "14"),
+    ("5", "6", "6"),
 
-    ("8", "7", "50"),
-    ("4", "7", "14"),
-    ("5", "7", "6"),
+    ("25", "7", "1"), -- Casa elisabetta
+    ("24", "7", "2"),
+    ("10", "7", "3"),
 
-    ("25", "8", "1"), -- Casa elisabetta
-    ("24", "8", "2"),
-    ("10", "8", "3"),
+    ("18", "8", "800"), -- Canile di padova
+    ("17", "8", "3"),
+    ("28", "8", "200"),
+    ("29", "8", "200"),
 
-    ("18", "9", "800"), -- Canile di padova
-    ("17", "9", "3"),
-    ("28", "9", "200"),
-    ("29", "9", "200"),
-
-    ("26", "10", "1200"), -- Medici senza frontiere
-    ("27", "10", "1500"),
-    ("22", "10", "450"),
+    ("26", "9", "1200"), -- Medici senza frontiere NON HA PREVENTIVI (MAI APPROVATA)
+    ("27", "9", "1500"),
+    ("22", "9", "450"),
     
-    ("24", "11", "5"), --Azienda Ospedaliera di Roma
-    ("20", "11", "200"),
-    ("3", "11", "56"),
+    ("24", "10", "5"), --Azienda Ospedaliera di Roma
+    ("20", "10", "200"),
+    ("3", "10", "56"),
 
-    ("12", "12", "900"), -- Cucine Popolari S. Rita
-    ("30", "12", "50"),
-    ("13", "12", "300"),
+    ("12", "11", "900"), -- Cucine Popolari S. Rita
+    ("30", "11", "50"),
+    ("13", "11", "300"),
 
-    ("3", "13", "23"), -- Istituto Oncologico di Padova
-    ("19", "13", "5"),
-    ("20", "13", "150"),
+    ("3", "12", "23"), -- Istituto Oncologico di Padova
+    ("20", "12", "150"),
 
-    ("24", "14", "10"), -- Azienda Ospedaliera di Venezia
-    ("25", "14", "1"),
-    ("31", "14", "30"),
+    ("24", "13", "10"), -- Azienda Ospedaliera di Venezia
+    ("25", "13", "1"),
 
-    ("7", "15", "46"), -- Caritas Roma
-    ("6", "15", "5"),
-    ("1", "15", "2000");    
+    ("7", "14", "46"), -- Caritas Roma
+    ("6", "14", "5"),
+    ("1", "14", "2000"),
+    
+    ("12", "15", "80"), --caritas s franceso lazio
+    ("15", "15", "45"),
+    ("13", "15", "40");
+   
     
     -- Popolazione Azienda
 INSERT INTO
     Azienda(piva, nome, telefono, indirizzo)
 VALUES
     ("8238401722", "FarmaPh s.r.l.", "+39 310874827", "Via Marco Polo 3, 53530, Padova"),
-    ("6699331325", "Arcaplanet", "+39 310820827", "Via Napoli 68, 78864, Padova"),
+    ("6699331325", "La casa degli amici", "+39 310820827", "Via Napoli 68, 78864, Padova"),
     ("7607418259", "Grandi Magazzini Ferrarin s.r.l.", "+39 340405107", "Via San Girolamo 56, 10637, Roma"),
     ("8749297545", "Supermercati Hello", "+39 355667963", "Via Padre Pio 45, 24678, Roma"),
-    ("1657677425", "Decathlon s.p.a.", "+39 370138344", "Via Cesare Beccaria 33, 94672, Venezia"),
+    ("1657677425", "Bisognin s.p.a.", "+39 370138344", "Via Cesare Beccaria 33, 94672, Venezia"),
     ("2979137105", "Pam Panorama S.p.A.", "+39 341315440", "Via San Francesco 22, 21534, Venezia"),
-    ("5121672285", "Plasmon S.p.A.", "+39 306733072", "Via 30 Febbraio 2, 62771, Verona"),
-    ("9416760333", "Sassari Healthcare s.a.s.", "+39 343865550", "Via Vandolmo 65, 87431, Latina"),
-    ("9416760333", "Foodish S.p.A.", "+39 3000055501", "Via Parigi 36, 87431, Latina"),
+    ("9416760333", "Healthcare s.a.s.", "+39 343865550", "Via Vandolmo 65, 87431, Milano"),
+    ("9416294820", "Foodish S.p.A.", "+39 3000055501", "Via Parigi 36, 87431, Latina"),
     ("5735548958", "Friulani Medical s.p.a.", "+39 392292896", "Via Guizza 93, 32768, Trento"),
-    ("1448068341", "Trainspotting Foods s.r.l.", "+39 391156326", "Via Colombo 64, 31358, Padova"),
-    ("9619512572", "Escher Bevande s.p.a.", "+39 354289884", "Via Primavera 37, 62456, Treviso"),
-    ("1021583491", "Hollywood Food Inc. s.p.a.", "+39 372111710", "Via Sicilia 93, 25072, Roma");
+    ("1448068341", "Smiling s.r.l.", "+39 391156326", "Via Colombo 64, 31358, Padova"),
+    ("9619512572", "EscherMed s.p.a.", "+39 354289884", "Via Primavera 37, 62456, Treviso"),
+    ("1021583491", "Grazie Inc. s.p.a.", "+39 372111710", "Via Sicilia 93, 25072, Roma");
     
     
     --I PREVENTIVI SONO 16, DI CUI 12 SARANNO VINCITORI
@@ -745,16 +741,69 @@ VALUES
 INSERT INTO
     Preventivo(piva, richiesta, emissione)
 VALUES
-    ("", "", "");
-    
-    
+    ("8238401722", "1", "2020-10-29"),
+    ("9416760333", "2", "2020-10-30"),
+    ("5735548958", "3", "2020-10-30"), --preventivo con un articolo con meno quantità rispetto alla richiesta
+    ("9416294820", "4", "2020-11-06"),
+    ("9619512572", "5", "2020-11-23"), --preventivo incompleto (mancano tutte le mascherine ma vincitore)
+	("1657677425", "6", "2020-11-24"),
+	("9416760333", "7", "2020-11-29"),
+	("6699331325", "8", "2020-11-30"), --manca il 9 perché non è mai stata approvata la richiesta
+	("7607418259", "10", "2020-12-01"),
+	("8749297545", "11", "2020-12-06"),
+	("1021583491", "12", "2020-12-09"),
+	("1448068341", "13", "2020-12-12"),
+
     -- Popolazione VocePreventivo
 INSERT INTO
     VocePreventivo(azienda, prodotto, richiesta, quantita, prezzo)
 VALUES
-    ("", "", "", "", "");
+    ("8238401722", "10", "1", "27", "525"),
+    ("8238401722", "11", "1", "2000", "3"),
     
+    ("9416760333", "19", "2", "20", "320"),
+    ("9416760333", "20", "2", "55", "3"),
+    ("9416760333", "21", "2", "500", "3"),
     
+    ("5735548958", "2", "3", "5000", "0.60"),
+    ("5735548958", "21", "3", "2000", "0.60"), -- preventivo con 2000 invece di 3050
+    ("5735548958", "22", "3", "1000", "1.10"),
+    
+    ("9416294820", "12", "4", "300", "0.15"),
+    ("9416294820", "23", "4", "3", "399"),
+    ("9416294820", "6", "4", "5", "23"),
+    ("9416294820", "13", "4", "400", "0.09"),
+    
+    ("9619512572", "26", "5", "250", "1.50"),
+    ("9619512572", "27", "5", "250", "1.50"),
+    
+    ("1657677425", "8", "6", "50", "4.30"),
+    ("1657677425", "4", "6", "14", "34"),
+    ("1657677425", "5", "6", "6", "60"),
+    
+	("9416760333", "25", "7", "1", "750"),
+    ("9416760333", "24", "7", "2", "320"),
+    ("9416760333", "10", "7", "3", "185"),
+    
+    ("6699331325", "18", "8", "800", "0.15"),
+    ("6699331325", "17", "8", "3", "32"),
+    ("6699331325", "28", "8", "200", "0.80"),
+    ("6699331325", "29", "8", "200", "0.80"),
+    
+    ("7607418259", "24", "10", "5", "315"),
+    ("7607418259", "20", "10", "200", "0.80"),
+    ("7607418259", "3", "10", "56", "112"),
+     
+	("8749297545", "12", "11", "900", "0.18"),
+	("8749297545", "30", "11", "50", "0.09"),
+	("8749297545", "13", "11", "300", "0.09"),
+	
+	("1021583491", "3", "12", "23", "110"),
+	("1021583491", "20", "12", "120", "2.50"), --120 INVECE DI 150
+	
+	("1448068341", "24", "13", "10", "216"),	
+	("1448068341", "25", "13", "1", "680"),	
+	
     -- Popolazione Scheda
 INSERT INTO
     Scheda(riunione, tipologia, preferenza)
@@ -762,11 +811,22 @@ VALUES
     ("", "", "");
     
     --I VINCITORI SONO 12
-    -- Popolazione Vincitore
+    -- Popolazione Vincitore FINITA
 INSERT INTO
     Vincitore(piva, richiesta, dichiarazione)
 VALUES
-    ("", "", "");
+    ("8238401722", "1", "2020-11-15"),
+    ("9416760333", "2", "2020-11-15"),
+    ("5735548958", "3", "2020-11-15"),
+    ("9416294820", "4", "2020-11-15"),
+    ("9619512572", "5", "2020-12-01"),
+    ("1657677425", "6", "2020-12-01"),
+    ("9416760333", "7", "2020-12-01"),
+    ("6699331325", "8", "2020-12-01"),
+    ("7607418259", "10", "2020-12-16"),
+    ("8749297545", "11", "2020-12-16"),
+    ("1021583491", "12", "2020-12-16"),
+    ("1448068341", "13", "2020-12-16");
     
     
     -- Popolazione Occasione
