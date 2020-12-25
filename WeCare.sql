@@ -609,8 +609,22 @@ VALUES
 INSERT INTO
     Valutazione(richiesta, riunione)
 VALUES
-    ("", "");
+    ("1", "1"),
+    ("2", "2"),
+    ("3", "3"),
+    ("4", "4"),
+    ("5", "4"),
+    ("5", "8"),
+    ("6", "5"),
+    ("7", "7"),
+    ("8", "6"),
+    ("9", "6"),
+    ("10", "12"),
+    ("11", "9"),
+    ("12", "11"),
+    ("9", "10");
     
+    --da ricontrollare bene!
     
     
     -- Popolazione Prodotto
