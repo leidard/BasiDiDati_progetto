@@ -1,5 +1,4 @@
-SET
-    FOREIGN_KEY_CHECKS = 0;
+SET FOREIGN_KEY_CHECKS = 0;
 
 DROP TABLE IF EXISTS Fattura;
 
@@ -69,8 +68,6 @@ CREATE TABLE Distretto(
     indirizzo VARCHAR(100) NOT NULL,
     presidente CHAR(16),
     PRIMARY KEY(numero, regione)
-    /* il fatto che non ci sia il not null vuol dire che potrebbe non avere subito il presidente. Quindi risolto????*/
-    /*FOREIGN KEY (presidente) REFERENCES Presidente(cf) ON DELETE NO ACTION ON UPDATE CASCADE*/
 );
 
 CREATE TABLE Socio(
@@ -381,9 +378,6 @@ CREATE TABLE Fattura(
 );
 
 
-
-
-
 -- Popolazione Distretto
 INSERT INTO
     Distretto(numero, regione, nome, indirizzo, presidente)
@@ -393,9 +387,9 @@ VALUES
     ("3", "VENETO", "Venezia1", "Piazza S. Marco 10, Venezia 30122", ""),					
     ("1", "LAZIO" "Roma1", "Via Del Sole, Roma 00010", "");				
     
-    3 veneto: 9 membri in 1, 10 in 2, 8 in 3
-    1 lazio: 16 membri
-    
+	-- 3 veneto: 9 membri in 1, 10 in 2, 8 in 3
+    --1 lazio: 16 membri
+    --TOT: 43 SOCI
  
     -- Popolazione Socio
 INSERT INTO
@@ -446,7 +440,6 @@ VALUES
 	("VLADNE85A90V631U", "Valentino", "Denni", "+39 3898989574", "valdenni@mail.com", "1985-06-18", "via Padova 30, Venezia", "3", "VENETO");
 
 
-    
  -- Popolazione Presidente
 INSERT INTO
     Presidente(CF, voto, lode) 
@@ -457,25 +450,25 @@ VALUES
     ("ANDTRO69B42E700J", "110", "0"); -- Veneto3
   
     
-    --3 CICLI DI RIUNIONI=12 RIUNIONI quindi 12 RICHIESTE APPROVATE
+    --3 CICLI DI RIUNIONI=12 RIUNIONI, quindi 12 RICHIESTE APPROVATE
     -- Popolazione Riunione
 INSERT INTO
     Riunione(regione, numero, data)
 VALUES
-    1("VENETO", "1", "2020-10-15"),
-    2("VENETO", "2", "2020-10-15"),
-    3("VENETO", "3", "2020-10-15"),
-    4("LAZIO", "1", "2020-10-15"),
+    ("VENETO", "1", "2020-10-15"),	--1
+    ("VENETO", "2", "2020-10-15"),	--2
+    ("VENETO", "3", "2020-10-15"),	--3
+    ("LAZIO", "1", "2020-10-15"),	--4
     
-    5("VENETO", "1", "2020-11-01"),
-    6("VENETO", "2", "2020-11-01"),
-    7("VENETO", "3", "2020-11-01"),
-    8("LAZIO", "1", "2020-11-01"),
+    ("VENETO", "1", "2020-11-01"),	--5
+    ("VENETO", "2", "2020-11-01"),	--6
+    ("VENETO", "3", "2020-11-01"),	--7
+    ("LAZIO", "1", "2020-11-01"),	--8
     
-    9("VENETO", "1", "2020-11-16"),
-    10("VENETO", "2", "2020-11-16"),
-    11("VENETO", "3", "2020-11-16"),
-    12("LAZIO", "1", "2020-11-16");   
+    ("VENETO", "1", "2020-11-16"),	--9
+    ("VENETO", "2", "2020-11-16"),	--10
+    ("VENETO", "3", "2020-11-16"),	--11
+    ("LAZIO", "1", "2020-11-16");	--12
     
     
     -- Popolazione Presenza
@@ -584,24 +577,25 @@ VALUES
 INSERT INTO
     Richiesta(ente, regione, creazione, apertura, chiusura)
 VALUES
-    ("Casa di Riposo \"Santa Maria\" Padova", "VENETO", "2020-10-11", "2020-10-15", "2020-11-15"),	1 
-    ("Azienda Ospedaliera di Padova", "VENETO", "2020-10-11", "2020-10-15", "2020-11-15"),			2
-    ("Azienda Ospedaliera di Venezia", "VENETO", "2020-10-12", "2020-10-15", "2020-11-15"),			3
-    ("Mensa Papa Giovanni", "LAZIO", "2020-10-14", "2020-10-15", "2020-11-15"),						4
-    ("Casa di Cura \"San Gennaro\"", "LAZIO", "2020-10-14", "2020-11-01", "2020-12-01"),			5	--ESEMPIO DI RICHIESTA CHE è STATA VOTATA MENO IMPORTANTE DELLA MENSA E VIENE APPROVATA ALLA RIUNIONE SUCCESSIVA (2 VOTAZIONI PER QUESTA RICHIESTA)
+    ("Casa di Riposo \"Santa Maria\" Padova", "VENETO", "2020-10-11", "2020-10-15", "2020-11-15"),	--1 
+    ("Azienda Ospedaliera di Padova", "VENETO", "2020-10-11", "2020-10-15", "2020-11-15"),			--2
+    ("Azienda Ospedaliera di Venezia", "VENETO", "2020-10-12", "2020-10-15", "2020-11-15"),			--3
+    ("Mensa Papa Giovanni", "LAZIO", "2020-10-14", "2020-10-15", "2020-11-15"),						--4
+    ("Casa di Cura \"San Gennaro\"", "LAZIO", "2020-10-14", "2020-11-01", "2020-12-01"),			--5	--ESEMPIO DI RICHIESTA CHE è STATA VOTATA MENO IMPORTANTE DELLA MENSA E VIENE APPROVATA ALLA RIUNIONE SUCCESSIVA (2 VOTAZIONI PER QUESTA RICHIESTA)
     
-    pd("Opera San Giovanni", "VENETO", "2020-10-22", "2020-11-01" "2020-12-01"),					6
-    ven("Casa Elisabetta", "VENETO", "2020-10-27", "2020-11-01" "2020-12-01"),						7
-    ("Canile di Padova", "VENETO", "2020-10-29", "2020-11-01" "2020-12-01"),						8
-    ("Medici senza frontiere gruppo di Padova", "VENETO", "2020-10-29"),							9	--ESEMPIO DI RICHIESTA VECCHIA VOTATA 2 VOLTE (RIUNIONE 11-01 E 11-16), MA MAI APPROVATA 
+    ("Opera San Giovanni", "VENETO", "2020-10-22", "2020-11-01" "2020-12-01"),					--6 PD
+    ("Casa Elisabetta", "VENETO", "2020-10-27", "2020-11-01" "2020-12-01"),						--7 VE
+    ("Canile di Padova", "VENETO", "2020-10-29", "2020-11-01" "2020-12-01"),						--8
+    ("Medici senza frontiere gruppo di Padova", "VENETO", "2020-10-29"),							--9	--ESEMPIO DI RICHIESTA VECCHIA VOTATA 2 VOLTE (RIUNIONE 11-01 E 11-16), MA MAI APPROVATA 
     
-    ("Azienda Ospedaliera di Roma", "LAZIO", "2020-11-02", "2020-11-16" "2020-12-16"),				10
-    pd("Cucine Popolari S. Rita", "VENETO", "2020-11-02", "2020-11-16" "2020-12-16"),				11
-    ("Istituto Oncologico di Padova", "VENETO", "2020-11-07", "2020-11-16" "2020-12-16"),			12
-    ("Azienda Ospedaliera di Venezia", "VENETO", "2020-11-12", "2020-11-16", "2020-12-16"),			13
-    	
-    ("Caritas Roma", "LAZIO", "2020-11-19"),			--mai aperte											14 --ESEMPIO DI RICHIESTA NUOVA CHE DEVE ANCORA ESSERE DISCUSSA		
-	("Caritas San Francesco", "LAZIO", "2020-11-30");	--quindi non hanno preventivi								15 --ESEMPIO DI RICHIESTA NUOVA CHE DEVE ANCORA ESSERE DISCUSSA		
+    ("Azienda Ospedaliera di Roma", "LAZIO", "2020-11-02", "2020-11-16" "2020-12-16"),				--10
+    ("Cucine Popolari S. Rita", "VENETO", "2020-11-02", "2020-11-16" "2020-12-16"),				--11 PD
+    ("Istituto Oncologico di Padova", "VENETO", "2020-11-07", "2020-11-16" "2020-12-16"),			--12
+    ("Azienda Ospedaliera di Venezia", "VENETO", "2020-11-12", "2020-11-16", "2020-12-16"),			--13
+    
+    --RICHIESTE MAI APERTE, QUINDI NON HANNO PREVENTIVI:
+    ("Caritas Roma", "LAZIO", "2020-11-19"),		--14: ESEMPIO DI RICHIESTA NUOVA CHE DEVE ANCORA ESSERE DISCUSSA		
+	("Caritas San Francesco", "LAZIO", "2020-11-30");	--15: ESEMPIO DI RICHIESTA NUOVA CHE DEVE ANCORA ESSERE DISCUSSA		
    
    
    			
@@ -624,53 +618,44 @@ VALUES
     ("13", "10"),
     ("12", "11"),
     ("10", "12");
-    
-    
-    
-    
-    --da ricontrollare bene!
-    
-    
+   
+     
     -- Popolazione Prodotto
 INSERT INTO
     Prodotto(nome, specifiche)
 VALUES
-    1("Mascherina filtrante", "FFP2"),
-    2("Mascherina filtrante", "FFP3"),
-    3("Letto singolo", "Piegevole, con barre laterali, asta sollevammalati e ruote piroettanti con freno"),
-    4("Materasso", "Ipoallergenico"),
-    5("Materasso", "Antidecubito"),
-    6("Microonde", "Potenza fino a 900W"),
-    7("Piumone", "90x200, ipoallergenico"),
-    8("Sacco a pelo", "Comfort 0 gradi"),
-    9("Antistaminico", "Classe A"),
-    10("Sedia a rotelle elettrica", "Peso max 150Kg"),
-    11("Pannoloni anziani"),
-    12("Pasta", "Secca, 1Kg"),
-    13("Fagioli", "In lattina"),
-    14("Latte", "1L, UHT"),
-    15("Latte in polvere", "per neonati, 6 mesi"),
-    16("Pannolini per neonati"),
-    17("Stufa elettrica", "Alogena a basso consumo"),
-    18("Cibo per cani", "Scatolette gastrointestinal"),
-    19("Sollevatore pazienti", "Elettrico, fino a 135Kg"),
-    20("Camice operatorio", "Taglia M"),
-    21("Tuta protettiva integrale", "Omologazione CE-DPI di I categoria, monouso in TNT di PP), 40 G/MQ"),
-    22("Bombola ossigeno monouso", "Ossigeno 99,5% compresso a 110 bar per ossigenoterapia da 0,95 lt"),
-    23("Frigorifero", "Classe A++, >200 litri"),
-    24("Sanificatore ambienti a ozono"),
-    25("Defibrillatore DAE semiautomatico", "Conforme alle linee guida 2010"),
-    26("Vaccino", "Meningococco B"),
-    27("Vaccino", "MPRV"),
-    28("Crocchette Carne Cani", "Secco Carne 1Kg"),
-    29("Crocchette Pesce Cani", "Secco Pesce 1Kg"),
-    30("Sacco Patate", "1Kg"),
-    31("Sedia a rotelle");
+    ("Mascherina filtrante", "FFP2"),	--1
+    ("Mascherina filtrante", "FFP3"),	--2
+    ("Letto singolo", "Piegevole, con barre laterali, asta sollevammalati e ruote piroettanti con freno"),	--3
+    ("Materasso", "Ipoallergenico"),	--4
+    ("Materasso", "Antidecubito"),	--5
+    ("Microonde", "Potenza fino a 900W"), --6
+    ("Piumone", "90x200, ipoallergenico"), --7
+    ("Sacco a pelo", "Comfort 0 gradi"), --8
+    ("Antistaminico", "Classe A"), --9
+    ("Sedia a rotelle elettrica", "Peso max 150Kg"), --10
+    ("Pannoloni anziani"), --11
+    ("Pasta", "Secca, 1Kg"), --12
+    ("Fagioli", "In lattina"), --13
+    ("Latte", "1L, UHT"), --14
+    ("Latte in polvere", "per neonati, 6 mesi"), --15
+    ("Pannolini per neonati"), --16
+    ("Stufa elettrica", "Alogena a basso consumo"), --17
+    ("Cibo per cani", "Scatolette gastrointestinal"), --18
+    ("Sollevatore pazienti", "Elettrico, fino a 135Kg"), --19
+    ("Camice operatorio", "Taglia M"), --20
+    ("Tuta protettiva integrale", "Omologazione CE-DPI di I categoria, monouso in TNT di PP), 40 G/MQ"), --21
+    ("Bombola ossigeno monouso", "Ossigeno 99,5% compresso a 110 bar per ossigenoterapia da 0,95 lt"), --22
+    ("Frigorifero", "Classe A++, >200 litri"), --23
+    ("Sanificatore ambienti a ozono"), --24
+    ("Defibrillatore DAE semiautomatico", "Conforme alle linee guida 2010"), --25
+    ("Vaccino", "Meningococco B"), --26
+    ("Vaccino", "MPRV"), --27
+    ("Crocchette Carne Cani", "Secco Carne 1Kg"), --28
+    ("Crocchette Pesce Cani", "Secco Pesce 1Kg"), --29
+    ("Sacco Patate", "1Kg"), --30
+    ("Sedia a rotelle"); --31
      
-    
-    
-
-    
     
     -- Popolazione VoceRichiesta
 INSERT INTO
@@ -790,7 +775,7 @@ VALUES
     ("9416760333", "21", "2", "500", "3"), --tot: 8.065 WIN
     
     ("5735548958", "2", "3", "5000", "0.60"),
-    ("5735548958", "21", "3", "2000", "0.60"), -- preventivo con 2000 invece di 3050
+    ("5735548958", "21", "3", "2000", "0.60"), -- preventivo con qta 2000 invece di 3050
     ("5735548958", "22", "3", "1000", "1.10"), --tot: 5.300 WIN
     
     ("9416294820", "12", "4", "300", "0.15"), 
@@ -826,10 +811,10 @@ VALUES
 	("8749297545", "13", "11", "300", "0.09"), -- 193,5
 	
 	("1021583491", "3", "12", "23", "110"),
-	("1021583491", "20", "12", "120", "2.50"), --120 INVECE DI 150 --2.830
+	("1021583491", "20", "12", "120", "2.50"), --qta 120 INVECE DI 150, ma WIN -- tot: 2.830
 	
 	("1448068341", "24", "13", "10", "216"),	
-	("1448068341", "25", "13", "1", "680"),	-- 2.840
+	("1448068341", "25", "13", "1", "680"),	-- 2.840 WIN
 	
 	("2979137105", "24", "13", "10", "239"),	
 	("2979137105", "25", "13", "1", "700"); --loser
@@ -857,7 +842,7 @@ VALUES
     ("4", "BIANCA"),
     ("4", "NULLA"),
     ("4", "VALIDA", "4"),
-    ("4", "VALIDA", "4"), --VINCE LA 4,OK
+    ("4", "VALIDA", "4"), --VINCE LA 4
     ("4", "VALIDA", "5"),
     
     ("5", "VALIDA", "6"),
@@ -930,65 +915,65 @@ VALUES
 INSERT INTO
     Occasione(indirizzo, data, descrizione, regione, n_distretto)    
 VALUES
-	1("Via Torino, 14A", "2020-11-08", "Fiera campionaria", "LAZIO", "1"),
-    2("Via Padre Pio, 11 Padova", "2020-11-14", "Fiera del volontariato", "VENETO", "1"),
-    3("Via Roma, Padova", "2020-11-15", "Banchetto promozionale", "VENETO", "1"),
-    4("Prato della Valle, Padova", "2020-11-21", "Banchetto promozionale", "VENETO", "1"),
-    5("Corso Milano, Roma", "2020-11-21", "Banchetto promozionale", "LAZIO", "1")
-    6("Via Padre Pio, 11 Padova", "2020-11-22", "Fiera del volontariato", "VENETO", "1"),
-    7("Via Padre Pio, 11 Padova", "2020-11-28", "Fiera del volontariato", "VENETO", "2"),
-    8("Via Romagna, 41 Venezia", "2020-11-28", "Polo Fieristico di Venezia", "VENETO", "3"),
-    9("San Pietro, Roma", "2020-11-28", "Promozione in strada con volantinaggio", "LAZIO", "1"),
-    10("Via Romagna, 41 Venezia", "2020-11-29", "Polo Fieristico di Venezia", "VENETO", "3");
+	("Via Torino, 14A", "2020-11-08", "Fiera campionaria", "LAZIO", "1"),					--1
+    ("Via Padre Pio, 11 Padova", "2020-11-14", "Fiera del volontariato", "VENETO", "1"),	--2	
+    ("Via Roma, Padova", "2020-11-15", "Banchetto promozionale", "VENETO", "1"),			--3
+    ("Prato della Valle, Padova", "2020-11-21", "Banchetto promozionale", "VENETO", "1"),	--4
+    ("Corso Milano, Roma", "2020-11-21", "Banchetto promozionale", "LAZIO", "1"),			--5
+    ("Via Padre Pio, 11 Padova", "2020-11-22", "Fiera del volontariato", "VENETO", "1"),	--6
+    ("Via Padre Pio, 11 Padova", "2020-11-28", "Fiera del volontariato", "VENETO", "2"),	--7
+    ("Via Romagna, 41 Venezia", "2020-11-28", "Polo Fieristico di Venezia", "VENETO", "3"),--8
+    ("San Pietro, Roma", "2020-11-28", "Promozione in strada con volantinaggio", "LAZIO", "1"),	--9
+    ("Via Romagna, 41 Venezia", "2020-11-29", "Polo Fieristico di Venezia", "VENETO", "3");	--10
 
     
     -- Popolazione Transazione
 INSERT INTO
     Transazione(time, importo, regione, n_distretto, tipologia, donato_presso)    
 VALUES --tipologia: "DONAZIONE", "SPESA", "FATTURA"
-    1("2020-11-05 10:00:41", "50", "LAZIO", "1", "SPESA"),
-    2("2020-11-05 10:20:02", "80", "LAZIO", "1", "SPESA"),
-    3("2020-11-08 22:51:13", "223", "LAZIO", "1", "DONAZIONE", "1"),
+    ("2020-11-05 10:00:41", "50", "LAZIO", "1", "SPESA"),					--1
+    ("2020-11-05 10:20:02", "80", "LAZIO", "1", "SPESA"),					--2
+    ("2020-11-08 22:51:13", "223", "LAZIO", "1", "DONAZIONE", "1"),			--3
     
-    4("2020-11-10 09:41:20", "20", "VENETO", "1", "SPESA"),
-    5("2020-11-10 11:07:41", "55", "VENETO", "1", "SPESA"),
-    6("2020-11-14 21:34:05", "302.5", "VENETO", "1", "DONAZIONE", "2"),
+    ("2020-11-10 09:41:20", "20", "VENETO", "1", "SPESA"),					--4
+    ("2020-11-10 11:07:41", "55", "VENETO", "1", "SPESA"),					--5
+    ("2020-11-14 21:34:05", "302.5", "VENETO", "1", "DONAZIONE", "2"),		--6
     
-    7("2020-11-15 20:57:12", "55.32", "VENETO", "1", "DONAZIONE", "3"),
+    ("2020-11-15 20:57:12", "55.32", "VENETO", "1", "DONAZIONE", "3"),		--7
     
-    8("2020-11-21 21:11:20", "72.90", "VENETO", "1", "DONAZIONE", "4"),
+    ("2020-11-21 21:11:20", "72.90", "VENETO", "1", "DONAZIONE", "4"),		--8
     
-    9("2020-11-21 21:37:49", "43", "LAZIO", "1", "DONAZIONE", "5"),
+    ("2020-11-21 21:37:49", "43", "LAZIO", "1", "DONAZIONE", "5"),			--9
     
-    10("2020-11-22 06:21:06", "62", "VENETO", "1", "SPESA"),
-	11("2020-11-22 06:30:30", "42", "VENETO", "1", "SPESA"),
-    12("2020-11-22 21:59:47", "113.20", "VENETO", "1", "DONAZIONE", "6"),
+    ("2020-11-22 06:21:06", "62", "VENETO", "1", "SPESA"),					--10
+	("2020-11-22 06:30:30", "42", "VENETO", "1", "SPESA"),					--11
+    ("2020-11-22 21:59:47", "113.20", "VENETO", "1", "DONAZIONE", "6"),		--12
     
-    13("2020-11-25 17:03:00", "122", "VENETO", "2", "SPESA"),
-    14("2020-11-25 17:07:03", "98", "VENETO", "3", "SPESA"),
-    15("2020-11-26 14:16:18", "38", "VENETO", "2", "SPESA"),
-    16("2020-11-28 22:41:03", "341", "VENETO", "2", "DONAZIONE", "7"),
-    17("2020-11-28 22:48:38", "261.10", "VENETO", "3", "DONAZIONE", "8"),
+    ("2020-11-25 17:03:00", "122", "VENETO", "2", "SPESA"),					--13
+    ("2020-11-25 17:07:03", "98", "VENETO", "3", "SPESA"),					--14
+    ("2020-11-26 14:16:18", "38", "VENETO", "2", "SPESA"),					--15
+    ("2020-11-28 22:41:03", "341", "VENETO", "2", "DONAZIONE", "7"),		--16
+    ("2020-11-28 22:48:38", "261.10", "VENETO", "3", "DONAZIONE", "8"),		--17
     
-    18("2020-11-28 23:05:11", "63", "LAZIO", "1", "DONAZIONE", "9"),
+    ("2020-11-28 23:05:11", "63", "LAZIO", "1", "DONAZIONE", "9"),			--18
     
-    19("2020-11-29 05:57:18", "45", "VENETO", "3", "SPESA"),
-    20("2020-11-29 06:45:32", "110", "VENETO", "3", "SPESA"),
-    21("2020-11-29 22:03:47", "143", "VENETO", "3", "DONAZIONE", "10")
+    ("2020-11-29 05:57:18", "45", "VENETO", "3", "SPESA"),					--19
+    ("2020-11-29 06:45:32", "110", "VENETO", "3", "SPESA"),					--20
+    ("2020-11-29 22:03:47", "143", "VENETO", "3", "DONAZIONE", "10"),		--21
     
-    22("2020-11-30 09:05:05", "10210", "VENETO" "1", "FATTURA"),
-    23("2020-11-30 09:10:08", "8065", "VENETO" "2", "FATTURA"),
-    24("2020-11-30 09:13:19", "5300", "VENETO" "3", "FATTURA"),
-    25("2020-11-30 09:17:24", "1717", "LAZIO" "1", "FATTURA"),
+    ("2020-11-30 09:05:05", "10210", "VENETO" "1", "FATTURA"),				--22
+    ("2020-11-30 09:10:08", "8065", "VENETO" "2", "FATTURA"),				--23
+    ("2020-11-30 09:13:19", "5300", "VENETO" "3", "FATTURA"),				--24
+    ("2020-11-30 09:17:24", "1717", "LAZIO" "1", "FATTURA"),				--25
     
-    26("2020-12-04 11:34:08", "750", "VENETO" "1", "FATTURA"),
-    27("2020-12-06 11:37:30", "1051", "VENETO" "2", "FATTURA"),
-    28("2020-12-06 11:41:54", "1945", "VENETO" "3", "FATTURA"),
-    29("2020-12-08 11:46:20", "536", "LAZIO" "1", "FATTURA"),
+    ("2020-12-04 11:34:08", "750", "VENETO" "1", "FATTURA"),				--26
+    ("2020-12-06 11:37:30", "1051", "VENETO" "2", "FATTURA"),				--27
+    ("2020-12-06 11:41:54", "1945", "VENETO" "3", "FATTURA"),				--28
+    ("2020-12-08 11:46:20", "536", "LAZIO" "1", "FATTURA"),					--29
     
-    30("2020-12-18 10:32:01", "8007", "VENETO" "1", "FATTURA"),
-    31("2020-12-19 09:14:00", "2830", "VENETO" "2", "FATTURA"),
-    32("2020-12-23 12:46:08", "1945", "VENETO" "3", "FATTURA");
+    ("2020-12-18 10:32:01", "8007", "VENETO" "1", "FATTURA"),				--30
+    ("2020-12-19 09:14:00", "2830", "VENETO" "2", "FATTURA"),				--31
+    ("2020-12-23 12:46:08", "1945", "VENETO" "3", "FATTURA");				--32
     --manca una fattura di proposito!
     
     -- Popolazione Spesa
