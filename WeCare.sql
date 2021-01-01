@@ -1,23 +1,23 @@
 --Disabilita i controlli sulle chiavi esterne
-ALTER TABLE IF EXISTS Fattura DISABLE TRIGGER ALL;
-ALTER TABLE IF EXISTS Spesa DISABLE TRIGGER ALL;
-ALTER TABLE IF EXISTS Transazione DISABLE TRIGGER ALL;
-ALTER TABLE IF EXISTS Occasione DISABLE TRIGGER ALL;
-ALTER TABLE IF EXISTS Vincitore DISABLE TRIGGER ALL;
-ALTER TABLE IF EXISTS Scheda DISABLE TRIGGER ALL;
-ALTER TABLE IF EXISTS VocePreventivo DISABLE TRIGGER ALL;
-ALTER TABLE IF EXISTS Preventivo DISABLE TRIGGER ALL;
-ALTER TABLE IF EXISTS Azienda DISABLE TRIGGER ALL;
-ALTER TABLE IF EXISTS VoceRichiesta DISABLE TRIGGER ALL;
-ALTER TABLE IF EXISTS Prodotto DISABLE TRIGGER ALL;
-ALTER TABLE IF EXISTS Valutazione DISABLE TRIGGER ALL;
-ALTER TABLE IF EXISTS Richiesta DISABLE TRIGGER ALL;
-ALTER TABLE IF EXISTS Ente DISABLE TRIGGER ALL;
-ALTER TABLE IF EXISTS Presenza DISABLE TRIGGER ALL;
-ALTER TABLE IF EXISTS Riunione DISABLE TRIGGER ALL;
-ALTER TABLE IF EXISTS Distretto DISABLE TRIGGER ALL;
-ALTER TABLE IF EXISTS Presidente DISABLE TRIGGER ALL;
-ALTER TABLE IF EXISTS Socio DISABLE TRIGGER ALL;
+-- ALTER TABLE IF EXISTS Fattura DISABLE TRIGGER ALL;
+-- ALTER TABLE IF EXISTS Spesa DISABLE TRIGGER ALL;
+-- ALTER TABLE IF EXISTS Transazione DISABLE TRIGGER ALL;
+-- ALTER TABLE IF EXISTS Occasione DISABLE TRIGGER ALL;
+-- ALTER TABLE IF EXISTS Vincitore DISABLE TRIGGER ALL;
+-- ALTER TABLE IF EXISTS Scheda DISABLE TRIGGER ALL;
+-- ALTER TABLE IF EXISTS VocePreventivo DISABLE TRIGGER ALL;
+-- ALTER TABLE IF EXISTS Preventivo DISABLE TRIGGER ALL;
+-- ALTER TABLE IF EXISTS Azienda DISABLE TRIGGER ALL;
+-- ALTER TABLE IF EXISTS VoceRichiesta DISABLE TRIGGER ALL;
+-- ALTER TABLE IF EXISTS Prodotto DISABLE TRIGGER ALL;
+-- ALTER TABLE IF EXISTS Valutazione DISABLE TRIGGER ALL;
+-- ALTER TABLE IF EXISTS Richiesta DISABLE TRIGGER ALL;
+-- ALTER TABLE IF EXISTS Ente DISABLE TRIGGER ALL;
+-- ALTER TABLE IF EXISTS Presenza DISABLE TRIGGER ALL;
+-- ALTER TABLE IF EXISTS Riunione DISABLE TRIGGER ALL;
+-- ALTER TABLE IF EXISTS Distretto DISABLE TRIGGER ALL;
+-- ALTER TABLE IF EXISTS Presidente DISABLE TRIGGER ALL;
+-- ALTER TABLE IF EXISTS Socio DISABLE TRIGGER ALL;
 
 --Svuota il database
 DROP TABLE IF EXISTS Fattura;
@@ -36,8 +36,8 @@ DROP TABLE IF EXISTS Richiesta;
 DROP TABLE IF EXISTS Ente;
 DROP TABLE IF EXISTS Presenza;
 DROP TABLE IF EXISTS Riunione;
-DROP TABLE IF EXISTS Distretto;
-DROP TABLE IF EXISTS Presidente;
+DROP TABLE IF EXISTS Distretto CASCADE;
+DROP TABLE IF EXISTS Presidente CASCADE;
 DROP TABLE IF EXISTS Socio;
 
 --Elimina i tipi
@@ -236,12 +236,12 @@ CREATE TABLE Fattura(
 INSERT INTO
     Distretto(numero, regione, nome, indirizzo)
 VALUES
-    (1, 'VENETO', 'Padova1', 'Via Roma 23, Padova 35140'),					
+    (1, 'VENETO', 'Padova1', 'Via Roma 23, Padova 35140'),                    
     (2, 'VENETO', 'Padova2', 'Via Firenze 10, Padova 35139'),
-    (3, 'VENETO', 'Venezia1', 'Piazza S. Marco 10, Venezia 30122'),					
-    (1, 'LAZIO', 'Roma1', 'Via Del Sole, Roma 00010');			
+    (3, 'VENETO', 'Venezia1', 'Piazza S. Marco 10, Venezia 30122'),                    
+    (1, 'LAZIO', 'Roma1', 'Via Del Sole, Roma 00010');            
     
-	-- 3 veneto: 9 membri in 1, 10 in 2, 8 in 3
+    -- 3 veneto: 9 membri in 1, 10 in 2, 8 in 3
     --1 lazio: 16 membri
     --TOT: 43 SOCI
  
@@ -256,8 +256,8 @@ VALUES
     ('MRODFA76U61V815A', 'Marco', 'Di Falco', '+39 1234567894', 'marco.difalco@mail.com', '1976-08-02', 'via Brigante 42, Roma', 1, 'LAZIO'),
     ('LGUBGO79S39G398K', 'Luigi', 'Brigo', '+39 1234567895', 'luigi.brigo@mail.com', '1979-04-02', 'via Sassari 22, Roma', 1, 'LAZIO'),
     ('MRAASS34A19C700X', 'Maria', 'Assunta', '+39 3335578910', 'mariaass@mail.com', '1990-10-22', 'via Bolla 3, Padova', 1, 'VENETO'),
-	('FFCFTE86V13V734O', 'Franca', 'Forte', '+39 3334921079', 'francyyy@mail.com', '1986-10-09', 'via Ghiberti 42 , Padova', 1, 'VENETO'),
-	('CHRSTA00P02A224K', 'Chiara', 'Stella', '+39 123567896', 'chiarastar@mail.com', '1990-01-01', 'via Dei Papaveri, 51, Padova', 2, 'VENETO'),
+    ('FFCFTE86V13V734O', 'Franca', 'Forte', '+39 3334921079', 'francyyy@mail.com', '1986-10-09', 'via Ghiberti 42 , Padova', 1, 'VENETO'),
+    ('CHRSTA00P02A224K', 'Chiara', 'Stella', '+39 123567896', 'chiarastar@mail.com', '1990-01-01', 'via Dei Papaveri, 51, Padova', 2, 'VENETO'),
     ('LUASAT88B02H094F', 'Lucia', 'Santarelli', '+39 1234567897', 'santalucia@mail.com', '1988-05-28', 'via Roma 11, Padova', 2, 'VENETO'),
     ('SFNBNH91Q80E142P', 'Stefano', 'Bianchi', '+39 1234567898', 'biastef@gmail.com', '1991-02-20', 'via Calabresi 11, Roma', 1, 'LAZIO'),
     ('MRKSTP98M16O730F', 'Mirko', 'Stapella', '+39 0002573940', 'mirkstap@mail.com', '1998-12-25', 'via Plinio 04, Roma', 1, 'LAZIO'),
@@ -273,25 +273,25 @@ VALUES
     ('SMASSA69D92I933A', 'Samuele', 'Sasso', '+39 3996558996', 'samusasso@mail.com', '1969-12-25', 'via Padova 30, Padova', 1, 'VENETO'),
     ('GNEGNI85M19E702E', 'Gennaro', 'Giunta', '+39 3987208901', 'gennagiunta@mail.com', '1985-04-02', 'via Distina 02, Venezia', 3, 'VENETO'),
     ('NDAGNE78A24E721X', 'Nadia', 'Gentile', '+39 3556552355', 'nadiagentile@mail.com', '1978-03-03', 'Piazza Duomo 14, Roma', 1, 'LAZIO'),
-	('CHIFRA91D01Q021E', 'Chiara', 'Ferragno', '+39 3596211118', 'chiaraferragno@mail.com', '1991-05-09', 'Via Dei Ruscelli 10, Roma', 1, 'LAZIO'),
-	('FBAFSU84E24W202R', 'Fabio', 'Fusto', '+39 3123699985', 'fustofabio@mail.com', '1984-10-23', 'Piazza Dei Vinti 06, Roma', 1, 'LAZIO'),
-	('MRACLA95F41R041T', 'Martina', 'Calle', '+39 3798874650', 'martycall@mail.com', '1995-03-16', 'Via Divina 18, Roma', 1, 'LAZIO'),
-	('LCUMBO67U35I721I', 'Luce', 'Ombrin', '+39 3222215669', 'luceombrin@mail.com', '1967-11-09', 'Via Rudale 07, Venezia', 3, 'VENETO'),
-	('LSETIL83E21E591V', 'Elisabetta', 'Italiano', '+39 3299855462', 'eliita@mail.com', '1983-01-20', 'Via Notte 23, Padova', 1, 'VENETO'),
-	('ZXOPSI77H35V509X', 'Ezio', 'Pisani', '+39 3666995230', 'eziopisani@mail.com', '1977-10-28', 'Via Politica 11, Venezia', 3, 'VENETO'),
-	('SLIPRO68D41H141R', 'Silvia', 'Opera', '+39 3009008007', 'silvope@mail.com', '1968-08-01', 'Via Degli Alberi 17, Roma', 1, 'LAZIO'),
-	('KRASMI90E71V291P', 'Karen', 'Smith', '+39 3687555544', 'karensmith@mail.com', '1990-10-31', 'Via Senna 07, Padova', 2, 'VENETO'),
-	('ALSMGA90E21N291I', 'Alfredo', 'Bianchi', '+39 3975449688', 'alfebianchi@mail.com', '1977-04-01', 'Via Sipario 22, Padova', 2, 'VENETO'),
-	('LGUBTE82E50H905W', 'Luigi', 'Bettin', '+39 3658765109', 'luigibetty@mail.com', '1982-06-11', 'Via Ghianda 07, Venezia', 3, 'VENETO'),
-	('OSVFRT66A19C700L', 'Osvaldo', 'Forte', '+39 33349210999', 'osvaldoforte@mail.com', '1966-04-19', 'via Dei Canti 18, Roma', 1, 'LAZIO'),
+    ('CHIFRA91D01Q021E', 'Chiara', 'Ferragno', '+39 3596211118', 'chiaraferragno@mail.com', '1991-05-09', 'Via Dei Ruscelli 10, Roma', 1, 'LAZIO'),
+    ('FBAFSU84E24W202R', 'Fabio', 'Fusto', '+39 3123699985', 'fustofabio@mail.com', '1984-10-23', 'Piazza Dei Vinti 06, Roma', 1, 'LAZIO'),
+    ('MRACLA95F41R041T', 'Martina', 'Calle', '+39 3798874650', 'martycall@mail.com', '1995-03-16', 'Via Divina 18, Roma', 1, 'LAZIO'),
+    ('LCUMBO67U35I721I', 'Luce', 'Ombrin', '+39 3222215669', 'luceombrin@mail.com', '1967-11-09', 'Via Rudale 07, Venezia', 3, 'VENETO'),
+    ('LSETIL83E21E591V', 'Elisabetta', 'Italiano', '+39 3299855462', 'eliita@mail.com', '1983-01-20', 'Via Notte 23, Padova', 1, 'VENETO'),
+    ('ZXOPSI77H35V509X', 'Ezio', 'Pisani', '+39 3666995230', 'eziopisani@mail.com', '1977-10-28', 'Via Politica 11, Venezia', 3, 'VENETO'),
+    ('SLIPRO68D41H141R', 'Silvia', 'Opera', '+39 3009008007', 'silvope@mail.com', '1968-08-01', 'Via Degli Alberi 17, Roma', 1, 'LAZIO'),
+    ('KRASMI90E71V291P', 'Karen', 'Smith', '+39 3687555544', 'karensmith@mail.com', '1990-10-31', 'Via Senna 07, Padova', 2, 'VENETO'),
+    ('ALSMGA90E21N291I', 'Alfredo', 'Bianchi', '+39 3975449688', 'alfebianchi@mail.com', '1977-04-01', 'Via Sipario 22, Padova', 2, 'VENETO'),
+    ('LGUBTE82E50H905W', 'Luigi', 'Bettin', '+39 3658765109', 'luigibetty@mail.com', '1982-06-11', 'Via Ghianda 07, Venezia', 3, 'VENETO'),
+    ('OSVFRT66A19C700L', 'Osvaldo', 'Forte', '+39 33349210999', 'osvaldoforte@mail.com', '1966-04-19', 'via Dei Canti 18, Roma', 1, 'LAZIO'),
     ('SREFNO59D95N520B', 'Sergio', 'Fontana', '+39 3844700133', 'sergiofonta@mail.com', '1959-02-02', 'via Gerusalemme 11, Roma', 1, 'LAZIO'),
     ('NCIFRE88E08W345R', 'Nicola', 'Fredino', '+39 3299856000', 'nicolafredi@mail.com', '1988-05-16', 'via Pisani 04, Roma', 1, 'LAZIO'),
     ('ALEGRC89D42N520B', 'Alessandra', 'Greco', '+39 3985216223', 'alessandragre@mail.com', '1989-04-18', 'via Narina 31, Padova', 2, 'VENETO'),
     ('GRELVA84E43E042X', 'Greta', 'Lavigna', '+39 3232323232', 'gretalvign@mail.com', '1984-11-19', 'via Vino 07, Padova', 2, 'VENETO'),
     ('JSADNI78W30V420E', 'Jasmine', 'Dinzeo', '+39 3696969804', 'jasmdinz@mail.com', '1978-04-16', 'via Romolo 31, Padova', 1, 'VENETO'),
     ('SBIRSU59D20V501B', 'Isabella', 'Russo', '+39 3787596400', 'isarusso@mail.com', '1959-12-14', 'via Canali 03, Padova', 2, 'VENETO'),
-	('VLALFE66E44E993V', 'Valentino', 'Elfino', '+39 3641402872', 'valeelf@mail.com', '1966-06-06', 'via Peonia 10, Roma', 1, 'LAZIO'),
-	('VLADNE85A90V631U', 'Valentino', 'Denni', '+39 3898989574', 'valdenni@mail.com', '1985-06-18', 'via Padova 30, Venezia', 3, 'VENETO');
+    ('VLALFE66E44E993V', 'Valentino', 'Elfino', '+39 3641402872', 'valeelf@mail.com', '1966-06-06', 'via Peonia 10, Roma', 1, 'LAZIO'),
+    ('VLADNE85A90V631U', 'Valentino', 'Denni', '+39 3898989574', 'valdenni@mail.com', '1985-06-18', 'via Padova 30, Venezia', 3, 'VENETO');
 
 
  -- Popolazione Presidente
@@ -309,20 +309,20 @@ VALUES
 INSERT INTO
     Riunione(regione, n_distretto, data)
 VALUES
-    ('VENETO', 1, '2020-10-15'),	--1
-    ('VENETO', 2, '2020-10-15'),	--2
-    ('VENETO', 3, '2020-10-15'),	--3
-    ('LAZIO', 1, '2020-10-15'),	--4
+    ('VENETO', 1, '2020-10-15'),    --1
+    ('VENETO', 2, '2020-10-15'),    --2
+    ('VENETO', 3, '2020-10-15'),    --3
+    ('LAZIO', 1, '2020-10-15'),    --4
     
-    ('VENETO', 1, '2020-11-01'),	--5
-    ('VENETO', 2, '2020-11-01'),	--6
-    ('VENETO', 3, '2020-11-01'),	--7
-    ('LAZIO', 1, '2020-11-01'),	--8
+    ('VENETO', 1, '2020-11-01'),    --5
+    ('VENETO', 2, '2020-11-01'),    --6
+    ('VENETO', 3, '2020-11-01'),    --7
+    ('LAZIO', 1, '2020-11-01'),    --8
     
-    ('VENETO', 1, '2020-11-16'),	--9
-    ('VENETO', 2, '2020-11-16'),	--10
-    ('VENETO', 3, '2020-11-16'),	--11
-    ('LAZIO', 1, '2020-11-16');	--12
+    ('VENETO', 1, '2020-11-16'),    --9
+    ('VENETO', 2, '2020-11-16'),    --10
+    ('VENETO', 3, '2020-11-16'),    --11
+    ('LAZIO', 1, '2020-11-16');    --12
     
     
     -- Popolazione Presenza
@@ -332,21 +332,21 @@ VALUES
 -- 1 CICLO DI RIUNIONI
     ('RSSMRA70S02G224K', 1), --pres ven1 
     ('FFCFTE86V13V734O', 1),
-	('ALSZNN85W14Z292A', 1),
+    ('ALSZNN85W14Z292A', 1),
     ('ALCSNN54A19M784W', 1),
     
-	('CHRSTA00P02A224K', 2), --pres ven2
-	('JNNSTH82B29C982T', 2),
+    ('CHRSTA00P02A224K', 2), --pres ven2
+    ('JNNSTH82B29C982T', 2),
     ('LCUSRE92F19Q700U', 2),
     
-	('ANDTRO69B42E700J', 3), --pres ven3
-	('GNEGNI85M19E702E', 3 ),
-	('LCUMBO67U35I721I', 3 ),
-	('ZXOPSI77H35V509X', 3 ),
-	('LGUBTE82E50H905W', 3 ),
-	('VLADNE85A90V631U', 3 ),
-	
-	('FJLTDP54A19C700X', 4), --pres laz1
+    ('ANDTRO69B42E700J', 3), --pres ven3
+    ('GNEGNI85M19E702E', 3 ),
+    ('LCUMBO67U35I721I', 3 ),
+    ('ZXOPSI77H35V509X', 3 ),
+    ('LGUBTE82E50H905W', 3 ),
+    ('VLADNE85A90V631U', 3 ),
+    
+    ('FJLTDP54A19C700X', 4), --pres laz1
     ('PALZBE82E10V790H', 4),
     ('MRODFA76U61V815A', 4),
     ('LGUBGO79S39G398K', 4),
@@ -355,56 +355,56 @@ VALUES
 -- 2 CICLO DI RIUNIONI
     ('RSSMRA70S02G224K', 5), --pres ven1 
     ('FJLTDP54A19C700X', 5),
-	('FFCFTE86V13V734O', 5),
-	('ALSZNN85W14Z292A', 5),
+    ('FFCFTE86V13V734O', 5),
+    ('ALSZNN85W14Z292A', 5),
     
     ('CHRSTA00P02A224K', 6), --pres ven2
     ('KRASMI90E71V291P', 6),
-	('ALSMGA90E21N291I', 6),
-	('LUASAT88B02H094F', 6),
+    ('ALSMGA90E21N291I', 6),
+    ('LUASAT88B02H094F', 6),
     ('DVDGLL99P88C724T', 6),
     
     ('ANDTRO69B42E700J', 7), --pres ven3
     ('GLOCDI94V12E294X', 7 ),
     ('LCUMBO67U35I721I', 7 ),
-	('ZXOPSI77H35V509X', 7 ),
+    ('ZXOPSI77H35V509X', 7 ),
     
     ('FJLTDP54A19C700X', 8), --pres laz1
     ('LGUBGO79S39G398K', 8),
     ('SFNBNH91Q80E142P', 8),
     ('MRKSTP98M16O730F', 8),
-	('NDAGNE78A24E721X', 8),
-	
+    ('NDAGNE78A24E721X', 8),
+    
 -- 3 CICLO DI RIUNIONI
-	('RSSMRA70S02G224K', 9), --pres ven1 
-	('LFACNA59U13P130U', 9),
-	('LSETIL83E21E591V', 9),
-	('FJLTDP54A19C700X', 9),
-	('ALCSNN54A19M784W', 9),
-	
-	
-	('CHRSTA00P02A224K', 10), --pres ven2
-	('GRELVA84E43E042X', 10),
-	('JNNSTH82B29C982T', 10),
-	('SBIRSU59D20V501B', 10),
-	
-	('ANDTRO69B42E700J', 11), --pres ven3
-	('GNEGNI85M19E702E', 11 ),
-	('LCUMBO67U35I721I', 11 ),
-	
-	('FJLTDP54A19C700X', 12), --pres laz1
-	('FBAFSU84E24W202R', 12),  
-	('MRACLA95F41R041T', 12),
-	('NCIFRE88E08W345R', 12),
+    ('RSSMRA70S02G224K', 9), --pres ven1 
+    ('LFACNA59U13P130U', 9),
+    ('LSETIL83E21E591V', 9),
+    ('FJLTDP54A19C700X', 9),
+    ('ALCSNN54A19M784W', 9),
+    
+    
+    ('CHRSTA00P02A224K', 10), --pres ven2
+    ('GRELVA84E43E042X', 10),
+    ('JNNSTH82B29C982T', 10),
+    ('SBIRSU59D20V501B', 10),
+    
+    ('ANDTRO69B42E700J', 11), --pres ven3
+    ('GNEGNI85M19E702E', 11 ),
+    ('LCUMBO67U35I721I', 11 ),
+    
+    ('FJLTDP54A19C700X', 12), --pres laz1
+    ('FBAFSU84E24W202R', 12),  
+    ('MRACLA95F41R041T', 12),
+    ('NCIFRE88E08W345R', 12),
     ('SLIPRO68D41H141R', 12),
     ('MIRTRO11A50E142B', 12),
     ('PALZBE82E10V790H', 12),
     ('MRODFA76U61V815A', 12);
     
     -- 'LCUMBO67U35I721I' di VEN3 è il socio che ha partecipato a tutte e 3 le riunioni, pur non essendo un presidente. 
-	
-	-- 3x4= 12 richieste approvate
-	
+    
+    -- 3x4= 12 richieste approvate
+    
 
     -- Popolazione Ente
 INSERT INTO
@@ -415,7 +415,7 @@ VALUES
     ('VENETO', 'Azienda Ospedaliera di Venezia', '+39 344405107', 'Via San Girolamo 56, 10637, Venezia', NULL),
     ('LAZIO', 'Mensa Papa Giovanni', '+39 355667963', 'Via Padre Pio 45, 24678, Roma', 'Mensa popolare per senzatetto'),
     ('LAZIO', 'Casa di Cura San Gennaro', '+39 372111710', 'Via Domenica 93, 25072, Roma', NULL),
-	('LAZIO', 'Caritas San Francesco', '+39 3855554620', 'Via Parma 08, 25072, Roma', NULL),
+    ('LAZIO', 'Caritas San Francesco', '+39 3855554620', 'Via Parma 08, 25072, Roma', NULL),
     ('VENETO', 'Opera San Giovanni', '+39 341315440', 'Via San Francesco 22, 21534, Padova', 'Residenza per senzatetto'),
     ('VENETO', 'Casa Elisabetta', '+39 300317963', 'Via Padre Pio 45, 24678, Venezia', 'Dimora per senzatetto'),
     ('VENETO', 'Canile di Padova', '+39 3048293029', 'Via Michelangelo 3, 23043, Padova', NULL),
@@ -431,28 +431,28 @@ VALUES
 INSERT INTO
     Richiesta(ente, regione, creazione, apertura, chiusura)
 VALUES
-    ('Casa di Riposo Santa Maria Padova', 'VENETO', '2020-10-11', '2020-10-15', '2020-11-15'),	--1 
-    ('Azienda Ospedaliera di Padova', 'VENETO', '2020-10-11', '2020-10-15', '2020-11-15'),			--2
-    ('Azienda Ospedaliera di Venezia', 'VENETO', '2020-10-12', '2020-10-15', '2020-11-15'),			--3
-    ('Mensa Papa Giovanni', 'LAZIO', '2020-10-14', '2020-10-15', '2020-11-15'),						--4
-    ('Casa di Cura San Gennaro', 'LAZIO', '2020-10-14', '2020-11-01', '2020-12-01'),			--5	--ESEMPIO DI RICHIESTA CHE è STATA VOTATA MENO IMPORTANTE DELLA MENSA E VIENE APPROVATA ALLA RIUNIONE SUCCESSIVA (2 VOTAZIONI PER QUESTA RICHIESTA)
+    ('Casa di Riposo Santa Maria Padova', 'VENETO', '2020-10-11', '2020-10-15', '2020-11-15'),    --1 
+    ('Azienda Ospedaliera di Padova', 'VENETO', '2020-10-11', '2020-10-15', '2020-11-15'),            --2
+    ('Azienda Ospedaliera di Venezia', 'VENETO', '2020-10-12', '2020-10-15', '2020-11-15'),            --3
+    ('Mensa Papa Giovanni', 'LAZIO', '2020-10-14', '2020-10-15', '2020-11-15'),                        --4
+    ('Casa di Cura San Gennaro', 'LAZIO', '2020-10-14', '2020-11-01', '2020-12-01'),            --5    --ESEMPIO DI RICHIESTA CHE è STATA VOTATA MENO IMPORTANTE DELLA MENSA E VIENE APPROVATA ALLA RIUNIONE SUCCESSIVA (2 VOTAZIONI PER QUESTA RICHIESTA)
     
-    ('Opera San Giovanni', 'VENETO', '2020-10-22', '2020-11-01', '2020-12-01'),					--6 PD
-    ('Casa Elisabetta', 'VENETO', '2020-10-27', '2020-11-01', '2020-12-01'),						--7 VE
-    ('Canile di Padova', 'VENETO', '2020-10-29', '2020-11-01', '2020-12-01'),						--8
-    ('Medici senza frontiere gruppo di Padova', 'VENETO', '2020-10-29', NULL, NULL),							--9	--ESEMPIO DI RICHIESTA VECCHIA VOTATA 2 VOLTE (RIUNIONE 11-01 E 11-16), MA MAI APPROVATA 
+    ('Opera San Giovanni', 'VENETO', '2020-10-22', '2020-11-01', '2020-12-01'),                    --6 PD
+    ('Casa Elisabetta', 'VENETO', '2020-10-27', '2020-11-01', '2020-12-01'),                        --7 VE
+    ('Canile di Padova', 'VENETO', '2020-10-29', '2020-11-01', '2020-12-01'),                        --8
+    ('Medici senza frontiere gruppo di Padova', 'VENETO', '2020-10-29', NULL, NULL),                            --9    --ESEMPIO DI RICHIESTA VECCHIA VOTATA 2 VOLTE (RIUNIONE 11-01 E 11-16), MA MAI APPROVATA 
     
-    ('Azienda Ospedaliera di Roma', 'LAZIO', '2020-11-02', '2020-11-16', '2020-12-16'),				--10
-    ('Cucine Popolari S. Rita', 'VENETO', '2020-11-02', '2020-11-16', '2020-12-16'),				--11 PD
-    ('Istituto Oncologico di Padova', 'VENETO', '2020-11-07', '2020-11-16', '2020-12-16'),			--12
-    ('Azienda Ospedaliera di Venezia', 'VENETO', '2020-11-12', '2020-11-16', '2020-12-16'),			--13
+    ('Azienda Ospedaliera di Roma', 'LAZIO', '2020-11-02', '2020-11-16', '2020-12-16'),                --10
+    ('Cucine Popolari S. Rita', 'VENETO', '2020-11-02', '2020-11-16', '2020-12-16'),                --11 PD
+    ('Istituto Oncologico di Padova', 'VENETO', '2020-11-07', '2020-11-16', '2020-12-16'),            --12
+    ('Azienda Ospedaliera di Venezia', 'VENETO', '2020-11-12', '2020-11-16', '2020-12-16'),            --13
     
     --RICHIESTE MAI APERTE, QUINDI NON HANNO PREVENTIVI:
-    ('Caritas Roma', 'LAZIO', '2020-11-19', NULL, NULL),		--14: ESEMPIO DI RICHIESTA NUOVA CHE DEVE ANCORA ESSERE DISCUSSA		
-	('Caritas San Francesco', 'LAZIO', '2020-11-30', NULL, NULL);	--15: ESEMPIO DI RICHIESTA NUOVA CHE DEVE ANCORA ESSERE DISCUSSA		
+    ('Caritas Roma', 'LAZIO', '2020-11-19', NULL, NULL),        --14: ESEMPIO DI RICHIESTA NUOVA CHE DEVE ANCORA ESSERE DISCUSSA        
+    ('Caritas San Francesco', 'LAZIO', '2020-11-30', NULL, NULL);    --15: ESEMPIO DI RICHIESTA NUOVA CHE DEVE ANCORA ESSERE DISCUSSA        
    
    
-   			
+               
     -- Popolazione Valutazione
 INSERT INTO
     Valutazione(richiesta, riunione)
@@ -467,7 +467,7 @@ VALUES
     (9, 6),
     (7, 7),
     (5, 8),
-	(11, 9),
+    (11, 9),
     (9, 10),
     (13, 10),
     (12, 11),
@@ -478,11 +478,11 @@ VALUES
 INSERT INTO
     Prodotto(nome, specifiche)
 VALUES
-    ('Mascherina filtrante', 'FFP2'),	--1
-    ('Mascherina filtrante', 'FFP3'),	--2
-    ('Letto singolo', 'Piegevole, con barre laterali, asta sollevammalati e ruote piroettanti con freno'),	--3
-    ('Materasso', 'Ipoallergenico'),	--4
-    ('Materasso', 'Antidecubito'),	--5
+    ('Mascherina filtrante', 'FFP2'),    --1
+    ('Mascherina filtrante', 'FFP3'),    --2
+    ('Letto singolo', 'Piegevole, con barre laterali, asta sollevammalati e ruote piroettanti con freno'),    --3
+    ('Materasso', 'Ipoallergenico'),    --4
+    ('Materasso', 'Antidecubito'),    --5
     ('Microonde', 'Potenza fino a 900W'), --6
     ('Piumone', '90x200, ipoallergenico'), --7
     ('Sacco a pelo', 'Comfort 0 gradi'), --8
@@ -604,15 +604,15 @@ VALUES
     ('5735548958', 3, '2020-10-30'), --preventivo con un articolo con meno quantità rispetto alla richiesta
     ('9416294820', 4, '2020-11-06'),
     ('9619512572', 5, '2020-11-23'), --preventivo incompleto (mancano tutte le mascherine ma vincitore) 
-	('5735548958', 5, '2020-11-24'), --loser
-	('1657677425', 6, '2020-11-24'),
-	('9416760333', 7, '2020-11-29'),
-	('6699331325', 8, '2020-11-30'), --manca il 9 perché non è mai stata approvata la richiesta
-	('7607418259', 10, '2020-12-01'),
-	('8749297545', 11, '2020-12-06'),
-	('1021583491', 12, '2020-12-09'),
-	('1448068341', 13, '2020-12-12'),
-	('2979137105', 13, '2020-12-13'); --loser
+    ('5735548958', 5, '2020-11-24'), --loser
+    ('1657677425', 6, '2020-11-24'),
+    ('9416760333', 7, '2020-11-29'),
+    ('6699331325', 8, '2020-11-30'), --manca il 9 perché non è mai stata approvata la richiesta
+    ('7607418259', 10, '2020-12-01'),
+    ('8749297545', 11, '2020-12-06'),
+    ('1021583491', 12, '2020-12-09'),
+    ('1448068341', 13, '2020-12-12'),
+    ('2979137105', 13, '2020-12-13'); --loser
 
     -- Popolazione VocePreventivo
 INSERT INTO
@@ -647,7 +647,7 @@ VALUES
     ('1657677425', 4, 6, 14, 34),
     ('1657677425', 5, 6, 6, 60), --tot: 1.051 WIN
     
-	('9416760333', 25, 7, 1, 750),
+    ('9416760333', 25, 7, 1, 750),
     ('9416760333', 24, 7, 2, 320),
     ('9416760333', 10, 7, 3, 185), --tot: 1.945 WIN
     
@@ -660,19 +660,19 @@ VALUES
     ('7607418259', 20, 10, 200, 0.80), 
     ('7607418259', 3, 10, 56, 112), --8.007 WIN
      
-	('8749297545', 12, 11, 900, 0.18),
-	('8749297545', 30, 11, 50, 0.09),
-	('8749297545', 13, 11, 300, 0.09), -- 193,5
-	
-	('1021583491', 3, 12, 23, 110),
-	('1021583491', 20, 12, 120, 2.50), --qta 120 INVECE DI 150, ma WIN -- tot: 2.830
-	
-	('1448068341', 24, 13, 10, 216),	
-	('1448068341', 25, 13, 1, 680),	-- 2.840 WIN
-	
-	('2979137105', 24, 13, 10, 239),	
-	('2979137105', 25, 13, 1, 700); --loser
-	
+    ('8749297545', 12, 11, 900, 0.18),
+    ('8749297545', 30, 11, 50, 0.09),
+    ('8749297545', 13, 11, 300, 0.09), -- 193,5
+    
+    ('1021583491', 3, 12, 23, 110),
+    ('1021583491', 20, 12, 120, 2.50), --qta 120 INVECE DI 150, ma WIN -- tot: 2.830
+    
+    ('1448068341', 24, 13, 10, 216),    
+    ('1448068341', 25, 13, 1, 680),    -- 2.840 WIN
+    
+    ('2979137105', 24, 13, 10, 239),    
+    ('2979137105', 25, 13, 1, 700); --loser
+    
     -- Popolazione Scheda
 INSERT INTO
     Scheda(riunione, tipologia, preferenza)
@@ -769,65 +769,65 @@ VALUES
 INSERT INTO
     Occasione(indirizzo, data, descrizione, regione, n_distretto)    
 VALUES
-	('Via Torino, 14A', '2020-11-08', 'Fiera campionaria', 'LAZIO', 1),					--1
-    ('Via Padre Pio, 11 Padova', '2020-11-14', 'Fiera del volontariato', 'VENETO', 1),	--2	
-    ('Via Roma, Padova', '2020-11-15', 'Banchetto promozionale', 'VENETO', 1),			--3
-    ('Prato della Valle, Padova', '2020-11-21', 'Banchetto promozionale', 'VENETO', 1),	--4
-    ('Corso Milano, Roma', '2020-11-21', 'Banchetto promozionale', 'LAZIO', 1),			--5
-    ('Via Padre Pio, 11 Padova', '2020-11-22', 'Fiera del volontariato', 'VENETO', 1),	--6
-    ('Via Padre Pio, 11 Padova', '2020-11-28', 'Fiera del volontariato', 'VENETO', 2),	--7
-    ('Via Romagna, 41 Venezia', '2020-11-28', 'Polo Fieristico di Venezia', 'VENETO', 3),--8
-    ('San Pietro, Roma', '2020-11-28', 'Promozione in strada con volantinaggio', 'LAZIO', 1),	--9
-    ('Via Romagna, 41 Venezia', '2020-11-29', 'Polo Fieristico di Venezia', 'VENETO', 3);	--10
+    ('Via Torino, 14A', '2020-11-08', 'Fiera campionaria', 'LAZIO', 1),                            --1
+    ('Via Padre Pio, 11 Padova', '2020-11-14', 'Fiera del volontariato', 'VENETO', 1),            --2    
+    ('Via Roma, Padova', '2020-11-15', 'Banchetto promozionale', 'VENETO', 1),                    --3
+    ('Prato della Valle, Padova', '2020-11-21', 'Banchetto promozionale', 'VENETO', 1),            --4
+    ('Corso Milano, Roma', '2020-11-21', 'Banchetto promozionale', 'LAZIO', 1),                    --5
+    ('Via Padre Pio, 11 Padova', '2020-11-22', 'Fiera del volontariato', 'VENETO', 1),            --6
+    ('Via Padre Pio, 11 Padova', '2020-11-28', 'Fiera del volontariato', 'VENETO', 2),            --7
+    ('Via Romagna, 41 Venezia', '2020-11-28', 'Polo Fieristico di Venezia', 'VENETO', 3),       --8
+    ('San Pietro, Roma', '2020-11-28', 'Promozione in strada con volantinaggio', 'LAZIO', 1),    --9
+    ('Via Romagna, 41 Venezia', '2020-11-29', 'Polo Fieristico di Venezia', 'VENETO', 3);        --10
 
     
     -- Popolazione Transazione
 INSERT INTO
     Transazione(time, importo, regione, n_distretto, tipologia, donato_presso)    
 VALUES --tipologia: 'DONAZIONE', 'SPESA', 'FATTURA'
-    ('2020-11-05 10:00:41', 50, 'LAZIO', 1, 'SPESA', NULL),					--1
-    ('2020-11-05 10:20:02', 80, 'LAZIO', 1, 'SPESA', NULL),					--2
-    ('2020-11-08 22:51:13', 223, 'LAZIO', 1, 'DONAZIONE', 1),			--3
+    ('2020-11-05 10:00:41', 50, 'LAZIO', 1, 'SPESA', NULL),                    --1
+    ('2020-11-05 10:20:02', 80, 'LAZIO', 1, 'SPESA', NULL),                    --2
+    ('2020-11-08 22:51:13', 223, 'LAZIO', 1, 'DONAZIONE', 1),            --3
     
-    ('2020-11-10 09:41:20', 20, 'VENETO', 1, 'SPESA', NULL),					--4
-    ('2020-11-10 11:07:41', 55, 'VENETO', 1, 'SPESA', NULL),					--5
-    ('2020-11-14 21:34:05', 302.5, 'VENETO', 1, 'DONAZIONE', 2),		--6
+    ('2020-11-10 09:41:20', 20, 'VENETO', 1, 'SPESA', NULL),                    --4
+    ('2020-11-10 11:07:41', 55, 'VENETO', 1, 'SPESA', NULL),                    --5
+    ('2020-11-14 21:34:05', 302.5, 'VENETO', 1, 'DONAZIONE', 2),        --6
     
-    ('2020-11-15 20:57:12', 55.32, 'VENETO', 1, 'DONAZIONE', 3),		--7
+    ('2020-11-15 20:57:12', 55.32, 'VENETO', 1, 'DONAZIONE', 3),        --7
     
-    ('2020-11-21 21:11:20', 72.90, 'VENETO', 1, 'DONAZIONE', 4),		--8
+    ('2020-11-21 21:11:20', 72.90, 'VENETO', 1, 'DONAZIONE', 4),        --8
     
-    ('2020-11-21 21:37:49', 43, 'LAZIO', 1, 'DONAZIONE', 5),			--9
+    ('2020-11-21 21:37:49', 43, 'LAZIO', 1, 'DONAZIONE', 5),            --9
     
-    ('2020-11-22 06:21:06', 62, 'VENETO', 1, 'SPESA', NULL),					--10
-	('2020-11-22 06:30:30', 42, 'VENETO', 1, 'SPESA', NULL),					--11
-    ('2020-11-22 21:59:47', 113.20, 'VENETO', 1, 'DONAZIONE', 6),		--12
+    ('2020-11-22 06:21:06', 62, 'VENETO', 1, 'SPESA', NULL),                    --10
+    ('2020-11-22 06:30:30', 42, 'VENETO', 1, 'SPESA', NULL),                    --11
+    ('2020-11-22 21:59:47', 113.20, 'VENETO', 1, 'DONAZIONE', 6),        --12
     
-    ('2020-11-25 17:03:00', 122, 'VENETO', 2, 'SPESA', NULL),					--13
-    ('2020-11-25 17:07:03', 98, 'VENETO', 3, 'SPESA', NULL),					--14
-    ('2020-11-26 14:16:18', 38, 'VENETO', 2, 'SPESA', NULL),					--15
-    ('2020-11-28 22:41:03', 341, 'VENETO', 2, 'DONAZIONE', 7),		--16
-    ('2020-11-28 22:48:38', 261.10, 'VENETO', 3, 'DONAZIONE', 8),		--17
+    ('2020-11-25 17:03:00', 122, 'VENETO', 2, 'SPESA', NULL),                    --13
+    ('2020-11-25 17:07:03', 98, 'VENETO', 3, 'SPESA', NULL),                    --14
+    ('2020-11-26 14:16:18', 38, 'VENETO', 2, 'SPESA', NULL),                    --15
+    ('2020-11-28 22:41:03', 341, 'VENETO', 2, 'DONAZIONE', 7),        --16
+    ('2020-11-28 22:48:38', 261.10, 'VENETO', 3, 'DONAZIONE', 8),        --17
     
-    ('2020-11-28 23:05:11', 63, 'LAZIO', 1, 'DONAZIONE', 9),			--18
+    ('2020-11-28 23:05:11', 63, 'LAZIO', 1, 'DONAZIONE', 9),            --18
     
-    ('2020-11-29 05:57:18', 45, 'VENETO', 3, 'SPESA', NULL),					--19
-    ('2020-11-29 06:45:32', 110, 'VENETO', 3, 'SPESA', NULL),					--20
-    ('2020-11-29 22:03:47', 143, 'VENETO', 3, 'DONAZIONE', 10),		--21
+    ('2020-11-29 05:57:18', 45, 'VENETO', 3, 'SPESA', NULL),                    --19
+    ('2020-11-29 06:45:32', 110, 'VENETO', 3, 'SPESA', NULL),                    --20
+    ('2020-11-29 22:03:47', 143, 'VENETO', 3, 'DONAZIONE', 10),        --21
     
-    ('2020-11-30 09:05:05', 10210, 'VENETO', 1, 'FATTURA', NULL),				--22
-    ('2020-11-30 09:10:08', 8065, 'VENETO', 2, 'FATTURA', NULL),				--23
-    ('2020-11-30 09:13:19', 5300, 'VENETO', 3, 'FATTURA', NULL),				--24
-    ('2020-11-30 09:17:24', 1717, 'LAZIO', 1, 'FATTURA', NULL),				--25
+    ('2020-11-30 09:05:05', 10210, 'VENETO', 1, 'FATTURA', NULL),                --22
+    ('2020-11-30 09:10:08', 8065, 'VENETO', 2, 'FATTURA', NULL),                --23
+    ('2020-11-30 09:13:19', 5300, 'VENETO', 3, 'FATTURA', NULL),                --24
+    ('2020-11-30 09:17:24', 1717, 'LAZIO', 1, 'FATTURA', NULL),                --25
     
-    ('2020-12-04 11:34:08', 750, 'VENETO', 1, 'FATTURA', NULL),				--26
-    ('2020-12-06 11:37:30', 1051, 'VENETO', 2, 'FATTURA', NULL),				--27
-    ('2020-12-06 11:41:54', 1945, 'VENETO', 3, 'FATTURA', NULL),				--28
-    ('2020-12-08 11:46:20', 536, 'LAZIO', 1, 'FATTURA', NULL),					--29
+    ('2020-12-04 11:34:08', 750, 'VENETO', 1, 'FATTURA', NULL),                --26
+    ('2020-12-06 11:37:30', 1051, 'VENETO', 2, 'FATTURA', NULL),                --27
+    ('2020-12-06 11:41:54', 1945, 'VENETO', 3, 'FATTURA', NULL),                --28
+    ('2020-12-08 11:46:20', 536, 'LAZIO', 1, 'FATTURA', NULL),                    --29
     
-    ('2020-12-18 10:32:01', 8007, 'VENETO', 1, 'FATTURA', NULL),				--30
-    ('2020-12-19 09:14:00', 2830, 'VENETO', 2, 'FATTURA', NULL),				--31
-    ('2020-12-23 12:46:08', 1945, 'VENETO', 3, 'FATTURA', NULL);				--32
+    ('2020-12-18 10:32:01', 8007, 'VENETO', 1, 'FATTURA', NULL),                --30
+    ('2020-12-19 09:14:00', 2830, 'VENETO', 2, 'FATTURA', NULL),                --31
+    ('2020-12-23 12:46:08', 1945, 'VENETO', 3, 'FATTURA', NULL);                --32
     --manca una fattura di proposito!
     
     -- Popolazione Spesa

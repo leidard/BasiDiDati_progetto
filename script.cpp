@@ -7,9 +7,9 @@
 using namespace std;
 
 # define PG_HOST "127.0.0.1"
-# define PG_USER " postgres "
-# define PG_DB " filesystem "
-# define PG_PASS " password "
+# define PG_USER "socio"
+# define PG_DB "filesystem"
+# define PG_PASS "password"
 # define PG_PORT 5432
 
 
