@@ -1,5 +1,5 @@
-#include <libpq-fe.h>
-
+//#include <libpq-fe.h>
+#include "dependencies/include/libpq-fe.h"
 #include <cstdio>
 #include <fstream>
 #include <iostream>
@@ -42,6 +42,7 @@ int main(int argc, char* argv[]) {
     string query4 = "DROP VIEW IF EXISTS RichiesteAperte; CREATE VIEW RichiesteAperte AS ( SELECT id, ente, regione, creazione, apertura, chiusura FROM Richiesta WHERE apertura IS NOT NULL AND chiusura IS NULL); DROP VIEW IF EXISTS RichiestaConclusaTempoImpiegato; CREATE VIEW RichiestaConclusaTempoImpiegato AS ( SELECT id, ente, regione, EXTRACT(EPOCH FROM (chiusura::timestamp - apertura::timestamp))/86400::int AS tempo FROM Richiesta WHERE apertura IS NOT NULL AND chiusura IS NOT NULL); SELECT rcti.regione, MIN(rcti.tempo) AS minimo, MAX(rcti.tempo) AS massimo, AVG(rcti.tempo) AS medio, COUNT(rcti.id) AS concluse, COUNT(ra.id) AS aperte FROM RichiestaConclusaTempoImpiegato AS rcti FULL OUTER JOIN RichiesteAperte AS ra ON rcti.id = ra.id GROUP BY (rcti.regione);";
     string query5 = "DROP VIEW IF EXISTS VotiPerRichiesta CASCADE; CREATE VIEW VotiPerRichiesta AS ( SELECT riunione, preferenza, count(numero) AS num_voti FROM Scheda WHERE preferenza IS NOT NULL GROUP BY (preferenza, riunione) ORDER BY riunione ASC); DROP VIEW IF EXISTS VincitorePerRiunione;CREATE VIEW VincitorePerRiunione AS (SELECT * FROM VotiPerRichiesta AS a WHERE num_voti = (SELECT MAX(num_voti) FROM VotiPerRichiesta WHERE riunione = a.riunione)); SELECT ric.id, riu.n_distretto, riu.regione, v.riunione, v.num_voti FROM Riunione AS riu FULL JOIN VincitorePerRiunione AS v ON riu.id = v.riunione FULL JOIN Richiesta AS ric ON v.preferenza = ric.id ORDER BY ric.id ASC;";
     string query6 = "DROP VIEW IF EXISTS PresenzePerDistretto; CREATE VIEW PresenzePerDistretto AS( SELECT s.n_distretto, s.regione, COUNT(p.socio) AS presenze, EXTRACT(YEAR FROM r.data) AS anno FROM Presenza AS p INNER JOIN Socio AS s ON p.socio = s.cf INNER JOIN Riunione AS r ON p.riunione = r.id GROUP BY (s.n_distretto, s.regione, anno)); DROP VIEW IF EXISTS PresenzaPerSocio; CREATE VIEW PresenzaPerSocio AS ( SELECT p.socio, n_distretto, regione, COUNT(p.socio) AS num_presenze FROM Presenza AS p INNER JOIN Socio AS s ON s.cf = p.socio GROUP BY (socio, n_distretto, regione) ORDER BY num_presenze ); SELECT ppd.regione, ppd.n_distretto, ppd.presenze, ppd.anno, pp.socio AS 'piu presente', pp.num_presenze AS 'presenze massime', mp.socio AS 'meno presente', mp.num_presenze AS 'presenze minime' FROM PresenzePerDistretto AS ppd FULL JOIN ( SELECT DISTINCT ON (n_distretto, regione) * FROM PresenzaPerSocio AS p1 WHERE num_presenze = (SELECT MAX(num_presenze) FROM PresenzaPerSocio AS p2 WHERE p1.regione = p2.regione AND p1.n_distretto = p2.n_distretto LIMIT 1) ) AS pp ON ppd.n_distretto = pp.n_distretto AND ppd.regione = pp.regione FULL JOIN ( SELECT DISTINCT ON (n_distretto, regione) * FROM PresenzaPerSocio AS p1 WHERE num_presenze = (SELECT MIN(num_presenze) FROM PresenzaPerSocio AS p2 WHERE p1.regione = p2.regione AND p1.n_distretto = p2.n_distretto LIMIT 1) ) AS mp ON ppd.n_distretto = mp.n_distretto AND ppd.regione = mp.regione WHERE anno = 2020 AND ppd.regione = 'VENETO' ORDER BY (ppd.regione, ppd.n_distretto);";
+    
     //QUERY 1
     cout << "Query 1: Per ogni distretto mostrare il totale delle donazioni che ha ottenuto, il totale delle spese effettuate, il totale delle fatture emesse e il ricavato netto(donazioni-(fatture+spese)):" << endl;
     PGresult* res;
@@ -66,14 +67,14 @@ int main(int argc, char* argv[]) {
     PQclear(res);
 
     //QUERY 2
-    cout << "Query 2: Elencare in ordine crescente i distretti che hanno approvato pi� richieste contenenti il prodotto di nome x nel periodo che va dalla data y alla data z, dove x y e z sono parametri: " << endl;
+    cout << "Query 2: Elencare in ordine crescente i distretti che hanno approvato piu richieste contenenti il prodotto di nome x nel periodo che va dalla data y alla data z, dove x y e z sono parametri: " << endl;
     PGresult* stmt = PQprepare(conn, "query2", query2.c_str(), 3, NULL);
 
     string prodotto;
     string dataI;
     string dataF;
 
-    cout << "Inserire il nome del prodotto(es. Mascherina filtrante): ";
+    cout << "Inserire il nome del prodotto(es. Mascherina): ";
     cin >> prodotto;
     cout << "Inserire la data di inizio del periodo (es. 2020.10.15): ";
     cin >> dataI;
@@ -102,7 +103,7 @@ int main(int argc, char* argv[]) {
     PQclear(res);
 
     //QUERY 3
-    cout << "Query 3: Elencare in ordine crescente le tre aziende che hanno ricevuto pi� soldi da parte di WeCare e, per ognuna, il numero di preventivi vincitori che detiene:" << endl;
+    cout << "Query 3: Elencare in ordine crescente le tre aziende che hanno ricevuto piu soldi da parte di WeCare e, per ognuna, il numero di preventivi vincitori che detiene:" << endl;
 
     res = PQexec(conn, query3.c_str());
     checkResults(res, conn);
