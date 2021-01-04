@@ -1,28 +1,7 @@
---Disabilita i controlli sulle chiavi esterne
--- ALTER TABLE IF EXISTS Fattura DISABLE TRIGGER ALL;
--- ALTER TABLE IF EXISTS Spesa DISABLE TRIGGER ALL;
--- ALTER TABLE IF EXISTS Transazione DISABLE TRIGGER ALL;
--- ALTER TABLE IF EXISTS Occasione DISABLE TRIGGER ALL;
--- ALTER TABLE IF EXISTS Vincitore DISABLE TRIGGER ALL;
--- ALTER TABLE IF EXISTS Scheda DISABLE TRIGGER ALL;
--- ALTER TABLE IF EXISTS VocePreventivo DISABLE TRIGGER ALL;
--- ALTER TABLE IF EXISTS Preventivo DISABLE TRIGGER ALL;
--- ALTER TABLE IF EXISTS Azienda DISABLE TRIGGER ALL;
--- ALTER TABLE IF EXISTS VoceRichiesta DISABLE TRIGGER ALL;
--- ALTER TABLE IF EXISTS Prodotto DISABLE TRIGGER ALL;
--- ALTER TABLE IF EXISTS Valutazione DISABLE TRIGGER ALL;
--- ALTER TABLE IF EXISTS Richiesta DISABLE TRIGGER ALL;
--- ALTER TABLE IF EXISTS Ente DISABLE TRIGGER ALL;
--- ALTER TABLE IF EXISTS Presenza DISABLE TRIGGER ALL;
--- ALTER TABLE IF EXISTS Riunione DISABLE TRIGGER ALL;
--- ALTER TABLE IF EXISTS Distretto DISABLE TRIGGER ALL;
--- ALTER TABLE IF EXISTS Presidente DISABLE TRIGGER ALL;
--- ALTER TABLE IF EXISTS Socio DISABLE TRIGGER ALL;
-
 --Svuota il database
-DROP TABLE IF EXISTS Fattura;
-DROP TABLE IF EXISTS Spesa;
-DROP TABLE IF EXISTS Transazione;
+DROP TABLE IF EXISTS Fattura CASCADE;
+DROP TABLE IF EXISTS Spesa CASCADE;
+DROP TABLE IF EXISTS Transazione CASCADE;
 DROP TABLE IF EXISTS Occasione;
 DROP TABLE IF EXISTS Vincitore;
 DROP TABLE IF EXISTS Scheda;
@@ -40,10 +19,14 @@ DROP TABLE IF EXISTS Distretto CASCADE;
 DROP TABLE IF EXISTS Presidente CASCADE;
 DROP TABLE IF EXISTS Socio;
 
---Elimina i tipi
+--Eliminazione dei tipi
 DROP TYPE IF EXISTS REGIONI;
 DROP TYPE IF EXISTS TIPOLOGIADITRANSAZIONE;
 DROP TYPE IF EXISTS TIPOLOGIADISCHEDA;
+
+
+
+----------------CREAZIONE DATABASE----------------
 
 --Creazione dei tipi
 CREATE TYPE REGIONI AS ENUM ('VALLE D''AOSTA','PIEMONTE','LIGURIA','LOMBARDIA','TRENTINO-ALTO ADIGE','VENETO','FRIULI-VENEZIA GIULIA','EMILIA ROMAGNA','TOSCANA','UMBRIA','MARCHE','LAZIO','ABRUZZO','MOLISE','CAMPANIA','PUGLIA','BASILICATA','CALABRIA','SICILIA','SARDEGNA');
@@ -71,8 +54,6 @@ CREATE TABLE Socio(
     n_distretto INT NOT NULL,
     regione REGIONI NOT NULL,
     FOREIGN KEY(n_distretto, regione) REFERENCES Distretto(numero, regione) ON DELETE NO ACTION ON UPDATE CASCADE
-    /*non posso cancellare un distretto se ci sono soci ancora iscritti, devo prima spostare tutti i soci.
-     se sposto un distretto di regione (perché dovrei farlo, wtf?) tengo i soci associati(?)*/
 );
 
 CREATE TABLE Presidente(
@@ -81,7 +62,6 @@ CREATE TABLE Presidente(
     lode BOOLEAN DEFAULT FALSE,
     CHECK ((lode=TRUE AND voto=110) OR (lode=FALSE AND voto<=110)),
     FOREIGN KEY (cf) REFERENCES Socio(cf) ON DELETE CASCADE ON UPDATE CASCADE
-    /*se elimino un socio che fa il presidente lo elimino anche qua*/
 );
 
 ALTER TABLE Distretto ADD FOREIGN KEY (presidente) REFERENCES Presidente(cf) ON DELETE NO ACTION ON UPDATE CASCADE;
@@ -100,7 +80,6 @@ CREATE TABLE Presenza(
     riunione INT,
     PRIMARY KEY (socio, riunione),
     FOREIGN KEY (socio) REFERENCES Socio(cf) ON DELETE CASCADE ON UPDATE CASCADE,
-    /*se in Socio cancello un socio ne cancello anche la lista delle presenze */
     FOREIGN KEY (riunione) REFERENCES Riunione(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -171,7 +150,6 @@ CREATE TABLE VocePreventivo(
     PRIMARY KEY (azienda, richiesta, prodotto),
     FOREIGN KEY (azienda, richiesta) REFERENCES Preventivo(piva, richiesta) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (richiesta, prodotto) REFERENCES VoceRichiesta(richiesta, prodotto) ON DELETE NO ACTION ON UPDATE CASCADE
-    /* OPPURE SET NULL ANCHE*/
 );
 
 CREATE TABLE Scheda(
@@ -232,6 +210,11 @@ CREATE TABLE Fattura(
 );
 
 
+
+
+
+----------------POPOLAZIONE DATABASE----------------
+
 -- Popolazione Distretto
 INSERT INTO
     Distretto(numero, regione, nome, indirizzo)
@@ -241,11 +224,7 @@ VALUES
     (3, 'VENETO', 'Venezia1', 'Piazza S. Marco 10, Venezia 30122'),                    
     (1, 'LAZIO', 'Roma1', 'Via Del Sole, Roma 00010');            
     
-    -- 3 veneto: 9 membri in 1, 10 in 2, 8 in 3
-    --1 lazio: 16 membri
-    --TOT: 43 SOCI
- 
-    -- Popolazione Socio
+-- Popolazione Socio
 INSERT INTO
     Socio(CF, nome, cognome, telefono, email, data_nascita, indirizzo, n_distretto, regione)
 VALUES
@@ -294,7 +273,7 @@ VALUES
     ('VLADNE85A90V631U', 'Valentino', 'Denni', '+39 3898989574', 'valdenni@mail.com', '1985-06-18', 'via Padova 30, Venezia', 3, 'VENETO');
 
 
- -- Popolazione Presidente
+-- Popolazione Presidente
 INSERT INTO
     Presidente(CF, voto, lode) 
 VALUES
@@ -304,8 +283,7 @@ VALUES
     ('ANDTRO69B42E700J', 110, FALSE); -- Veneto3
   
     
-    --3 CICLI DI RIUNIONI=12 RIUNIONI, quindi 12 RICHIESTE APPROVATE
-    -- Popolazione Riunione
+-- Popolazione Riunione
 INSERT INTO
     Riunione(regione, n_distretto, data)
 VALUES
@@ -325,34 +303,34 @@ VALUES
     ('LAZIO', 1, '2020-11-16');    --12
     
     
-    -- Popolazione Presenza
+-- Popolazione Presenza
 INSERT INTO
     Presenza(socio, riunione)
 VALUES
--- 1 CICLO DI RIUNIONI
-    ('RSSMRA70S02G224K', 1), --pres ven1 
+    --1 CICLO DI RIUNIONI
+    ('RSSMRA70S02G224K', 1), --presidente ven1 
     ('FFCFTE86V13V734O', 1),
     ('ALSZNN85W14Z292A', 1),
     ('ALCSNN54A19M784W', 1),
     
-    ('CHRSTA00P02A224K', 2), --pres ven2
+    ('CHRSTA00P02A224K', 2), --presidente ven2
     ('JNNSTH82B29C982T', 2),
     ('LCUSRE92F19Q700U', 2),
     
-    ('ANDTRO69B42E700J', 3), --pres ven3
+    ('ANDTRO69B42E700J', 3), --presidente ven3
     ('GNEGNI85M19E702E', 3 ),
     ('LCUMBO67U35I721I', 3 ),
     ('ZXOPSI77H35V509X', 3 ),
     ('LGUBTE82E50H905W', 3 ),
     ('VLADNE85A90V631U', 3 ),
     
-    ('FJLTDP54A19C700X', 4), --pres laz1
+    ('FJLTDP54A19C700X', 4), --presidente laz1
     ('PALZBE82E10V790H', 4),
     ('MRODFA76U61V815A', 4),
     ('LGUBGO79S39G398K', 4),
     ('SFNBNH91Q80E142P', 4),
 
--- 2 CICLO DI RIUNIONI
+    -- 2 CICLO DI RIUNIONI
     ('RSSMRA70S02G224K', 5), --pres ven1 
     ('FJLTDP54A19C700X', 5),
     ('FFCFTE86V13V734O', 5),
@@ -375,7 +353,7 @@ VALUES
     ('MRKSTP98M16O730F', 8),
     ('NDAGNE78A24E721X', 8),
     
--- 3 CICLO DI RIUNIONI
+    -- 3 CICLO DI RIUNIONI
     ('RSSMRA70S02G224K', 9), --pres ven1 
     ('LFACNA59U13P130U', 9),
     ('LSETIL83E21E591V', 9),
@@ -401,12 +379,8 @@ VALUES
     ('PALZBE82E10V790H', 12),
     ('MRODFA76U61V815A', 12);
     
-    -- 'LCUMBO67U35I721I' di VEN3 è il socio che ha partecipato a tutte e 3 le riunioni, pur non essendo un presidente. 
-    
-    -- 3x4= 12 richieste approvate
-    
 
-    -- Popolazione Ente
+-- Popolazione Ente
 INSERT INTO
     Ente(regione, nome, telefono, indirizzo, descrizione)
 VALUES 
@@ -424,10 +398,9 @@ VALUES
     ('VENETO', 'Cucine Popolari S. Rita', '+39 3039872123', 'Via Padre Pio 45, 24678, Padova', NULL),
     ('VENETO', 'Istituto Oncologico di Padova', '+39 3333331092', 'Via Gattamelata 93, 32768, Padova', NULL),
     ('LAZIO', 'Caritas Roma', '+39 3333333847', 'Via Margherita 01, 32768, Roma', NULL);
-    -- HANNO FATTO TUTTI UNA RICHIESTA, TRANNE Azienda Ospedaliera di Venezia CHE NE HA FATTE 2
+    
 
-
-    -- Popolazione Richiesta
+-- Popolazione Richiesta
 INSERT INTO
     Richiesta(ente, regione, creazione, apertura, chiusura)
 VALUES
@@ -435,25 +408,21 @@ VALUES
     ('Azienda Ospedaliera di Padova', 'VENETO', '2020-10-11', '2020-10-15', '2020-11-15'),            --2
     ('Azienda Ospedaliera di Venezia', 'VENETO', '2020-10-12', '2020-10-15', '2020-11-15'),            --3
     ('Mensa Papa Giovanni', 'LAZIO', '2020-10-14', '2020-10-15', '2020-11-15'),                        --4
-    ('Casa di Cura San Gennaro', 'LAZIO', '2020-10-14', '2020-11-01', '2020-12-01'),            --5    --ESEMPIO DI RICHIESTA CHE è STATA VOTATA MENO IMPORTANTE DELLA MENSA E VIENE APPROVATA ALLA RIUNIONE SUCCESSIVA (2 VOTAZIONI PER QUESTA RICHIESTA)
-    
-    ('Opera San Giovanni', 'VENETO', '2020-10-22', '2020-11-01', '2020-12-01'),                    --6 PD
-    ('Casa Elisabetta', 'VENETO', '2020-10-27', '2020-11-01', '2020-12-01'),                        --7 VE
+    ('Casa di Cura San Gennaro', 'LAZIO', '2020-10-14', '2020-11-01', '2020-12-01'),            --5    --esempio di richiesta che è stata votata meno di un'altra e viene approvata alla riunione successiva (2 votazioni)
+    ('Opera San Giovanni', 'VENETO', '2020-10-22', '2020-11-01', '2020-12-01'),                    --6 
+    ('Casa Elisabetta', 'VENETO', '2020-10-27', '2020-11-01', '2020-12-01'),                        --7 
     ('Canile di Padova', 'VENETO', '2020-10-29', '2020-11-01', '2020-12-01'),                        --8
-    ('Medici senza frontiere gruppo di Padova', 'VENETO', '2020-10-29', NULL, NULL),                            --9    --ESEMPIO DI RICHIESTA VECCHIA VOTATA 2 VOLTE (RIUNIONE 11-01 E 11-16), MA MAI APPROVATA 
-    
+    ('Medici senza frontiere gruppo di Padova', 'VENETO', '2020-10-29', NULL, NULL),                  --9    --esempio di richiesta votata due volte (riunione 11-01 E 11-16), ma mai approvata 
     ('Azienda Ospedaliera di Roma', 'LAZIO', '2020-11-02', '2020-11-16', '2020-12-16'),                --10
-    ('Cucine Popolari S. Rita', 'VENETO', '2020-11-02', '2020-11-16', '2020-12-16'),                --11 PD
+    ('Cucine Popolari S. Rita', 'VENETO', '2020-11-02', '2020-11-16', '2020-12-16'),                --11
     ('Istituto Oncologico di Padova', 'VENETO', '2020-11-07', '2020-11-16', '2020-12-16'),            --12
     ('Azienda Ospedaliera di Venezia', 'VENETO', '2020-11-12', '2020-11-16', '2020-12-16'),            --13
-    
-    --RICHIESTE MAI APERTE, QUINDI NON HANNO PREVENTIVI:
-    ('Caritas Roma', 'LAZIO', '2020-11-19', NULL, NULL),        --14: ESEMPIO DI RICHIESTA NUOVA CHE DEVE ANCORA ESSERE DISCUSSA        
-    ('Caritas San Francesco', 'LAZIO', '2020-11-30', NULL, NULL);    --15: ESEMPIO DI RICHIESTA NUOVA CHE DEVE ANCORA ESSERE DISCUSSA        
+    --richieste non ancora discusse:
+    ('Caritas Roma', 'LAZIO', '2020-11-19', NULL, NULL),        --14  
+    ('Caritas San Francesco', 'LAZIO', '2020-11-30', NULL, NULL);    --15   
    
-   
-               
-    -- Popolazione Valutazione
+             
+-- Popolazione Valutazione
 INSERT INTO
     Valutazione(richiesta, riunione)
 VALUES
@@ -474,12 +443,12 @@ VALUES
     (10, 12);
    
      
-    -- Popolazione Prodotto
+-- Popolazione Prodotto
 INSERT INTO
     Prodotto(nome, specifiche)
 VALUES
-    ('Mascherina filtrante', 'FFP2'),    --1
-    ('Mascherina filtrante', 'FFP3'),    --2
+    ('Mascherina', 'FFP2'),    --1
+    ('Mascherina', 'FFP3'),    --2
     ('Letto singolo', 'Piegevole, con barre laterali, asta sollevammalati e ruote piroettanti con freno'),    --3
     ('Materasso', 'Ipoallergenico'),    --4
     ('Materasso', 'Antidecubito'),    --5
@@ -511,71 +480,71 @@ VALUES
     ('Sedia a rotelle', NULL); --31
      
     
-    -- Popolazione VoceRichiesta
+-- Popolazione VoceRichiesta
 INSERT INTO
     VoceRichiesta(prodotto, richiesta, quantita)
 VALUES
-    (10, 1, 27), -- casa di riposo s. maria pd
+    (10, 1, 27), 
     (11, 1, 2000),
     
-    (19,2,20), -- az osped padova
+    (19,2,20), 
     (20,2,55),
     (21,2,500),
     
-    (2,3,5000), --az osped venezi
+    (2,3,5000), 
     (21,3,3050),
     (22,3,1000),
     
-    (12,4,300), -- mensa papa giovanni roma
+    (12,4,300), 
     (23,4,3),
     (6, 4, 5),
     (13, 4, 400),
     
-    (26, 5, 250),-- casa di cura s. gennaro laz
+    (26, 5, 250),
     (27, 5, 250),
     (2, 5, 400),
     
-    (8, 6, 50), --opera s govanni pd
+    (8, 6, 50), 
     (4, 6, 14),
     (5, 6, 6),
 
-    (25, 7, 1), -- Casa elisabetta
+    (25, 7, 1), 
     (24, 7, 2),
     (10, 7, 3),
 
-    (18, 8, 800), -- Canile di padova
+    (18, 8, 800), 
     (17, 8, 3),
     (28, 8, 200),
     (29, 8, 200),
 
-    (26, 9, 1200), -- Medici senza frontiere NON HA PREVENTIVI (MAI APPROVATA)
+    (26, 9, 1200), 
     (27, 9, 1500),
     (22, 9, 450),
     
-    (24, 10, 5), --Azienda Ospedaliera di Roma
+    (24, 10, 5), 
     (20, 10, 200),
     (3, 10, 56),
 
-    (12, 11, 900), -- Cucine Popolari S. Rita
+    (12, 11, 900), 
     (30, 11, 50),
     (13, 11, 300),
 
-    (3, 12, 23), -- Istituto Oncologico di Padova
+    (3, 12, 23),
     (20, 12, 150),
 
-    (24, 13, 10), -- Azienda Ospedaliera di Venezia
+    (24, 13, 10), 
     (25, 13, 1),
 
-    (7, 14, 46), -- Caritas Roma
+    (7, 14, 46), 
     (6, 14, 5),
     (1, 14, 2000),
     
-    (12, 15, 80), --caritas s franceso lazio
+    (12, 15, 80), 
     (15, 15, 45),
     (13, 15, 40);
    
     
-    -- Popolazione Azienda
+-- Popolazione Azienda
 INSERT INTO
     Azienda(piva, nome, telefono, indirizzo)
 VALUES
@@ -593,85 +562,86 @@ VALUES
     ('1021583491', 'Grazie Inc. s.p.a.', '+39 372111710', 'Via Sicilia 93, 25072, Roma');
     
     
-    --I PREVENTIVI SONO 15, DI CUI 12 VINCITORI
-    -- Popolazione Preventivo 14
+-- Popolazione Preventivo
 INSERT INTO
     Preventivo(piva, richiesta, emissione)
 VALUES
-    ('1657677425', 1, '2020-10-27'), --loser
+    ('1657677425', 1, '2020-10-27'), 
     ('8238401722', 1, '2020-10-29'),
     ('9416760333', 2, '2020-10-30'),
-    ('5735548958', 3, '2020-10-30'), --preventivo con un articolo con meno quantità rispetto alla richiesta
+    ('5735548958', 3, '2020-10-30'), 
     ('9416294820', 4, '2020-11-06'),
-    ('9619512572', 5, '2020-11-23'), --preventivo incompleto (mancano tutte le mascherine ma vincitore) 
-    ('5735548958', 5, '2020-11-24'), --loser
+    ('9619512572', 5, '2020-11-23'), 
+    ('5735548958', 5, '2020-11-24'), 
     ('1657677425', 6, '2020-11-24'),
     ('9416760333', 7, '2020-11-29'),
-    ('6699331325', 8, '2020-11-30'), --manca il 9 perché non è mai stata approvata la richiesta
+    ('6699331325', 8, '2020-11-30'), 
     ('7607418259', 10, '2020-12-01'),
     ('8749297545', 11, '2020-12-06'),
     ('1021583491', 12, '2020-12-09'),
     ('1448068341', 13, '2020-12-12'),
-    ('2979137105', 13, '2020-12-13'); --loser
+    ('2979137105', 13, '2020-12-13'); 
+    
 
-    -- Popolazione VocePreventivo
+-- Popolazione VocePreventivo
 INSERT INTO
     VocePreventivo(azienda, prodotto, richiesta, quantita, prezzo)
 VALUES
     ('1657677425', 10, 1, 27, 247),
-    ('1657677425', 11, 1, 2000, 3), --loser
+    ('1657677425', 11, 1, 2000, 3), --perde
     
     ('8238401722', 10, 1, 27, 230),
-    ('8238401722', 11, 1, 2000, 2), --tot: 10.210 WIN
+    ('8238401722', 11, 1, 2000, 2), --vince, tot: 10.210 euro
     
     ('9416760333', 19, 2, 20, 320),
     ('9416760333', 20, 2, 55, 3),
-    ('9416760333', 21, 2, 500, 3), --tot: 8.065 WIN
+    ('9416760333', 21, 2, 500, 3), --vince, tot: 8.065 euro
     
     ('5735548958', 2, 3, 5000, 0.60),
-    ('5735548958', 21, 3, 2000, 0.60), -- preventivo con qta 2000 invece di 3050
-    ('5735548958', 22, 3, 1000, 1.10), --tot: 5.300 WIN
+    ('5735548958', 21, 3, 2000, 0.60), 
+    ('5735548958', 22, 3, 1000, 1.10), --vince, tot: 5.300 euro
     
     ('9416294820', 12, 4, 300, 0.15), 
     ('9416294820', 23, 4, 3, 399),
     ('9416294820', 6, 4, 5, 23),
-    ('9416294820', 13, 4, 400, 0.09), --tot: 1.717 WIN
+    ('9416294820', 13, 4, 400, 0.09), --vince, tot: 1.717 euro
     
     ('9619512572', 26, 5, 250, 1.50),
-    ('9619512572', 27, 5, 250, 1.50), --tot: 750 WIN
+    ('9619512572', 27, 5, 250, 1.50), --vince, tot: 750 euro
     
     ('5735548958', 26, 5, 250, 2.50),
-    ('5735548958', 27, 5, 250, 2.50), --LOSER
+    ('5735548958', 27, 5, 250, 2.50), --perde
     
     ('1657677425', 8, 6, 50, 4.30),
     ('1657677425', 4, 6, 14, 34),
-    ('1657677425', 5, 6, 6, 60), --tot: 1.051 WIN
+    ('1657677425', 5, 6, 6, 60), --vince, tot: 1.051 euro
     
     ('9416760333', 25, 7, 1, 750),
     ('9416760333', 24, 7, 2, 320),
-    ('9416760333', 10, 7, 3, 185), --tot: 1.945 WIN
+    ('9416760333', 10, 7, 3, 185), --vince, tot: 1.945 euro
     
     ('6699331325', 18, 8, 800, 0.15),
     ('6699331325', 17, 8, 3, 32),
     ('6699331325', 28, 8, 200, 0.80),
-    ('6699331325', 29, 8, 200, 0.80), --tot: 536 WIN
+    ('6699331325', 29, 8, 200, 0.80), --vince, tot: 536 euro
     
     ('7607418259', 24, 10, 5, 315),
     ('7607418259', 20, 10, 200, 0.80), 
-    ('7607418259', 3, 10, 56, 112), --8.007 WIN
+    ('7607418259', 3, 10, 56, 112), --vince, tot: 8.007 euro
      
     ('8749297545', 12, 11, 900, 0.18),
     ('8749297545', 30, 11, 50, 0.09),
-    ('8749297545', 13, 11, 300, 0.09), -- 193,5
+    ('8749297545', 13, 11, 300, 0.09), -- vince, tot: 193,5 euro
     
     ('1021583491', 3, 12, 23, 110),
-    ('1021583491', 20, 12, 120, 2.50), --qta 120 INVECE DI 150, ma WIN -- tot: 2.830
-    
+    ('1021583491', 20, 12, 120, 2.50), --vince, tot: 2.830 euro
+        
     ('1448068341', 24, 13, 10, 216),    
-    ('1448068341', 25, 13, 1, 680),    -- 2.840 WIN
+    ('1448068341', 25, 13, 1, 680),  --vince, tot: 2.840 euro
     
     ('2979137105', 24, 13, 10, 239),    
-    ('2979137105', 25, 13, 1, 700); --loser
+    ('2979137105', 25, 13, 1, 700); --perde
+    
     
     -- Popolazione Scheda
 INSERT INTO
@@ -696,7 +666,7 @@ VALUES
     (4, 'BIANCA', NULL),
     (4, 'NULLA', NULL),
     (4, 'VALIDA', 4),
-    (4, 'VALIDA', 4), --VINCE LA 4
+    (4, 'VALIDA', 4), 
     (4, 'VALIDA', 5),
     
     (5, 'VALIDA', 6),
@@ -745,9 +715,8 @@ VALUES
     (12, 'VALIDA', 10),
     (12, 'VALIDA', 10);
     
-    
-    --I VINCITORI SONO 12
-    -- Popolazione Vincitore FINITA
+
+-- Popolazione Vincitore 
 INSERT INTO
     Vincitore(piva, richiesta, dichiarazione)
 VALUES
@@ -765,7 +734,7 @@ VALUES
     ('1448068341', 13, '2020-12-16');
     
     
-    -- Popolazione Occasione
+-- Popolazione Occasione
 INSERT INTO
     Occasione(indirizzo, data, descrizione, regione, n_distretto)    
 VALUES
@@ -781,7 +750,7 @@ VALUES
     ('Via Romagna, 41 Venezia', '2020-11-29', 'Polo Fieristico di Venezia', 'VENETO', 3);        --10
 
     
-    -- Popolazione Transazione
+-- Popolazione Transazione
 INSERT INTO
     Transazione(time, importo, regione, n_distretto, tipologia, donato_presso)    
 VALUES --tipologia: 'DONAZIONE', 'SPESA', 'FATTURA'
@@ -828,30 +797,26 @@ VALUES --tipologia: 'DONAZIONE', 'SPESA', 'FATTURA'
     ('2020-12-18 10:32:01', 8007, 'VENETO', 1, 'FATTURA', NULL),                --30
     ('2020-12-19 09:14:00', 2830, 'VENETO', 2, 'FATTURA', NULL),                --31
     ('2020-12-23 12:46:08', 1945, 'VENETO', 3, 'FATTURA', NULL);                --32
-    --manca una fattura di proposito!
+ 
     
-    -- Popolazione Spesa
+-- Popolazione Spesa
 INSERT INTO
     Spesa(transazione, occasione, giustificazione)
 VALUES
     (1, 1, 'Quota di partecipazione fiera'),
     (2, 1, 'Costi di allestimento stand'),
-    
     (4, 2, 'Quota di partecipazione fiera'),
     (5, 2, 'Costi di allestimento stand'),
-    
     (10, 6, 'Contributo fiera'),
     (11, 6, 'Costi di stampa volantini'),
-    
     (13, 7, 'Costi di allestimento stand'),
     (14, 8, 'Costi di allestimento stand'),
     (15, 7, 'Costi di stampa volantini'),
-    
     (19, 10, 'Quota di partecipazione fiera'),
     (20, 10, 'Costi di noleggio bancarella');
     
 
-    -- Popolazione Fattura
+-- Popolazione Fattura
 INSERT INTO
     Fattura(transazione, piva, richiesta)
 VALUES
@@ -866,4 +831,130 @@ VALUES
     (30, '7607418259', 10),
     (31, '8749297545', 11),
     (32, '1021583491', 12);
-    --il vincitore della richiesta 13(PIVA: 1448068341) non ha ancora ricevuto il bonifico
+    
+    
+    
+    
+    
+    
+----------------QUERY----------------
+
+--1: Per ogni distretto mostrare il totale delle donazioni che ha ottenuto, il totale delle spese effettuate, 
+--   il totale delle fatture emesse e il ricavato netto(donazioni-(fatture+spese)):
+DROP VIEW IF EXISTS totaleFatt; DROP VIEW IF EXISTS totaleDonaz; DROP VIEW IF EXISTS totaleSpese; 
+CREATE VIEW totaleFatt AS (SELECT Distretto.nome, SUM(importo) AS TOT_FATTURE
+FROM Distretto JOIN Transazione on Distretto.numero = Transazione.n_distretto AND Distretto.regione = Transazione.regione
+WHERE Transazione.tipologia = 'FATTURA'
+GROUP BY Distretto.nome);
+
+CREATE VIEW totaleDonaz AS (SELECT Distretto.nome, SUM(importo) AS TOT_DONAZIONI
+FROM Distretto JOIN Transazione on Distretto.numero = Transazione.n_distretto AND Distretto.regione = Transazione.regione
+WHERE Transazione.tipologia = 'DONAZIONE'
+GROUP BY Distretto.nome);
+
+CREATE VIEW totaleSpese AS (SELECT Distretto.nome, SUM(importo) AS TOT_SPESE
+FROM Distretto JOIN Transazione on Distretto.numero = Transazione.n_distretto AND Distretto.regione = Transazione.regione
+WHERE Transazione.tipologia = 'SPESA'
+GROUP BY Distretto.nome);
+
+SELECT DISTINCT totaleFatt.nome, TOT_DONAZIONI, TOT_SPESE, TOT_FATTURE, (TOT_DONAZIONI-(TOT_SPESE+TOT_FATTURE)) AS NETTO
+FROM totaleFatt JOIN totaleDonaz on totaleFatt.nome=totaleDonaz.nome JOIN totaleSpese ON totaleDonaz.nome=totaleSpese.nome;
+
+
+--2: Elencare in ordine crescente i distretti che hanno approvato più richieste contenenti il prodotto "Mascherina" 
+--   nel periodo che va dal 15.10.2020 al 16.11.2020:
+SELECT Riunione.regione, Riunione.n_distretto, COUNT(*) AS N_richiesteApprovate 
+FROM Riunione JOIN Valutazione ON Riunione.id=Valutazione.riunione JOIN Richiesta ON Valutazione.richiesta = Richiesta.id JOIN VoceRichiesta ON Richiesta.id =VoceRichiesta.richiesta JOIN Prodotto ON VoceRichiesta.prodotto = Prodotto.id
+WHERE Prodotto.nome='Mascherina' AND Richiesta.apertura >='2020.10.15' AND Richiesta.apertura <='2020.11.16'
+GROUP BY (Riunione.regione, Riunione.n_distretto)
+ORDER BY N_richiesteApprovate DESC;
+
+
+--3: Elencare in ordine crescente le tre aziende che hanno ricevuto più soldi da parte di WeCare e, per ognuna, 
+--   il numero di preventivi vincitori che detiene:
+SELECT T2.PIVA, T1.Azienda, T1.N_Vincite, T2.Soldi_ricevuti 
+FROM
+(SELECT Azienda.piva AS PIVA, Azienda.nome AS Azienda, count(*) AS N_Vincite
+FROM Azienda INNER JOIN Preventivo ON Azienda.piva = Preventivo.piva INNER JOIN Vincitore ON Preventivo.piva = Vincitore.piva
+GROUP BY Azienda.piva) AS T1
+JOIN
+(SELECT Vincitore.piva AS PIVA, SUM(Transazione.importo) AS Soldi_ricevuti
+FROM Vincitore INNER JOIN Fattura ON Vincitore.piva = Fattura.piva INNER JOIN Transazione ON Fattura.transazione = Transazione.id
+GROUP BY Vincitore.piva) AS T2
+ON T2.PIVA = T1.PIVA
+ORDER BY Soldi_ricevuti DESC
+LIMIT 3;
+
+
+--4: Elencare per ciascuna regione il tempo (in giorni) minimo, medio e massimo impiegato per portare a termine le richieste, 
+--   il numero di richieste portate a termine e quelle ancora aperte: 
+DROP VIEW IF EXISTS RichiesteAperte;
+CREATE VIEW RichiesteAperte AS ( 
+	SELECT id, ente, regione, creazione, apertura, chiusura FROM Richiesta WHERE apertura IS NOT NULL AND chiusura IS NULL);
+	
+DROP VIEW IF EXISTS RichiestaConclusaTempoImpiegato;
+CREATE VIEW RichiestaConclusaTempoImpiegato AS (
+	SELECT id, ente, regione, EXTRACT(EPOCH FROM (chiusura::timestamp - apertura::timestamp))/86400::int AS tempo FROM Richiesta 
+	WHERE apertura IS NOT NULL AND chiusura IS NOT NULL);
+	
+SELECT rcti.regione, MIN(rcti.tempo) AS minimo, MAX(rcti.tempo) AS massimo, AVG(rcti.tempo) AS medio, 
+	COUNT(rcti.id) AS concluse, COUNT(ra.id) AS aperte
+FROM RichiestaConclusaTempoImpiegato AS rcti
+FULL OUTER JOIN RichiesteAperte AS ra
+ON rcti.id = ra.id GROUP BY (rcti.regione);
+
+
+--5: Per ogni richiesta (approvata o meno) trovare il distretto che l’ha approvata e determinare durante quale riunione 
+--   e con quanti voti è passata:
+DROP VIEW IF EXISTS VotiPerRichiesta CASCADE;
+CREATE VIEW VotiPerRichiesta AS (
+	SELECT riunione, preferenza, count(numero) AS num_voti FROM Scheda 
+	WHERE preferenza IS NOT NULL GROUP BY (preferenza, riunione) ORDER BY riunione ASC
+);
+
+DROP VIEW IF EXISTS VincitorePerRiunione;
+CREATE VIEW VincitorePerRiunione AS (
+	SELECT * FROM VotiPerRichiesta a 
+	WHERE num_voti = (SELECT MAX(num_voti) FROM VotiPerRichiesta WHERE riunione = a.riunione)
+);
+
+SELECT ric.id, riu.n_distretto, riu.regione, v.riunione, v.num_voti FROM Riunione AS riu FULL JOIN VincitorePerRiunione AS v 
+ON riu.id = v.riunione
+FULL JOIN Richiesta AS ric ON v.preferenza = ric.id
+ORDER BY ric.id ASC;
+
+
+--6: Per ciascun DISTRETTO all’interno della regione “VENETO” ricavare quante presenze ha totalizzato dall'inizio dell’anno “2020” 
+--   (la somma di ogni “presenza”) e inoltre uno tra i soci meno presenti con il suo numero di presenze e 
+--   lo stesso per uno tra i piú presenti.
+DROP VIEW IF EXISTS PresenzePerDistretto; 
+CREATE VIEW PresenzePerDistretto AS( SELECT s.n_distretto, s.regione, COUNT(p.socio) AS presenze, EXTRACT(YEAR FROM r.data) AS anno 
+FROM Presenza AS p INNER JOIN Socio AS s ON p.socio = s.cf INNER JOIN Riunione AS r ON p.riunione = r.id 
+GROUP BY (s.n_distretto, s.regione, anno)); 
+
+DROP VIEW IF EXISTS PresenzaPerSocio; 
+CREATE VIEW PresenzaPerSocio AS ( SELECT p.socio, n_distretto, regione, COUNT(p.socio) AS num_presenze 
+FROM Presenza AS p INNER JOIN Socio AS s ON s.cf = p.socio 
+GROUP BY (socio, n_distretto, regione) 
+ORDER BY num_presenze ); 
+
+SELECT ppd.regione, ppd.n_distretto, ppd.presenze, ppd.anno, pp.socio AS "piu presente", pp.num_presenze AS "presenze massime", mp.socio AS "meno presente", mp.num_presenze AS "presenze minime" 
+FROM PresenzePerDistretto AS ppd 
+FULL JOIN 
+( SELECT DISTINCT ON (n_distretto, regione) * FROM PresenzaPerSocio AS p1 WHERE num_presenze = (SELECT MAX(num_presenze) FROM PresenzaPerSocio AS p2 
+WHERE p1.regione = p2.regione AND p1.n_distretto = p2.n_distretto LIMIT 1) ) AS pp ON ppd.n_distretto = pp.n_distretto AND ppd.regione = pp.regione 
+FULL JOIN 
+( SELECT DISTINCT ON (n_distretto, regione) * 
+FROM PresenzaPerSocio AS p1 
+WHERE num_presenze = (SELECT MIN(num_presenze) FROM PresenzaPerSocio AS p2 
+WHERE p1.regione = p2.regione AND p1.n_distretto = p2.n_distretto LIMIT 1) ) AS mp ON ppd.n_distretto = mp.n_distretto AND ppd.regione = mp.regione 
+WHERE anno = 2020 AND ppd.regione = 'VENETO' 
+ORDER BY (ppd.regione, ppd.n_distretto);
+
+
+
+
+----------------INDICE----------------
+DROP INDEX IF EXISTS idx_idProdotto;
+CREATE INDEX idx_idProdotto ON Prodotto(id);
+
