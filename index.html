@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<head>
+	<style>
+		body {
+			text-align: center;
+			font-family: Arial, Helvetica, sans-serif;
+			width: 100%;
+			height: 100%;
+			margin: 0;
+			padding: 0;
+		}
+
+		.c {
+			display: flex;
+			flex-direction: column;
+			justify-content: start;
+
+			height: auto;
+			min-height: 100%;
+			width: 100%;
+			max-width: 680px;
+			box-sizing: border-box;
+			margin: 0 auto;
+		}
+
+		.toc {
+			order: 1;
+			text-align: left;
+		}
+
+		.schema {
+			width: 100%;
+		}
+
+		#er {
+			order: 2;
+		}
+		#er-ristrutturato {
+			order: 3;
+		}
+		#script-cpp {
+			order: 4;
+		}
+		.schema img {
+			width: 100%;
+			height: auto;
+		}
+
+		.code pre {
+			height: 600px;
+			text-align: left;
+			overflow-x: scroll;
+			overflow-y: scroll;
+		}
+		footer {
+			width: 100%;
+		}
+	</style>
+	<link
+		rel="stylesheet"
+		type="text/css"
+		href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/vs2015.min.css"
+	/>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+</head>
+<html>
+	<body>
+		<div class="c">
+			<h1>WeCare</h1>
+			<div class="toc">
+				<ul>
+					<li><a href="#er">Schema E/R</a></li>
+					<li><a href="#er-ristrutturato">Schema Ristrutturato</a></li>
+					<li><a href="#script-cpp">script.cpp</a></li>
+				</ul>
+			</div>
+			<div class="d1"></div>
+			<div class="d2"></div>
+			<div id="er" class="schema">
+				<h3>Schema E/R</h3>
+				<a href="WeCare.svg">
+					<img alt="Schema E/R" src="WeCare.svg" />
+				</a>
+			</div>
+			<div id="er-ristrutturato" class="schema">
+				<h3>Schema E/R Ristrutturato</h3>
+				<a href="WeCare-ristrutturato.svg">
+					<img alt="Schema E/R Ristrutturato" src="WeCare-ristrutturato.svg" />
+				</a>
+			</div>
+			<div id="script-cpp" class="code">
+				<h3>script.cpp</h3>
+				<pre id="cpp" class="language-cpp hljs"></pre>
+			</div>
+			<footer></footer>
+		</div>
+		<script>
+			function escapeHtml(unsafe) {
+				return;
+			}
+			fetch('script.cpp').then((res) =>
+				res.text().then((data) => {
+					let block = document.getElementById('cpp');
+					block.innerHTML = data
+						.replace(/&/g, '&amp;')
+						.replace(/</g, '&lt;')
+						.replace(/>/g, '&gt;')
+						.replace(/"/g, '&quot;')
+						.replace(/'/g, '&#039;');
+					hljs.highlightBlock(block);
+				})
+			);
+		</script>
+	</body>
+</html>
