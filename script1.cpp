@@ -4,9 +4,9 @@
 #include <iostream>
 
 #define PG_HOST "127.0.0.1"
-#define PG_USER "nomeutente"
-#define PG_DB "database"
-#define PG_PASS "password"
+#define PG_USER "dario"
+#define PG_DB "dario"
+#define PG_PASS "testpw"
 #define PG_PORT 5432
 
 void checkResults(PGresult* res, const PGconn* conn) {

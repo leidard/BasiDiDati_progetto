@@ -1,5 +1,7 @@
 <!DOCTYPE html>
+
 <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<style>
 		body {
 			text-align: center;
@@ -32,84 +34,153 @@
 			width: 100%;
 		}
 
+		.card {
+			box-sizing: border-box;
+			border-top-left-radius: 32px;
+			border-top-right-radius: 32px;
+			border-top-style: solid;
+			border-top-color: white;
+			border-top-width: 4px;
+			padding-bottom: 64px;
+			margin-bottom: -32px;
+			overflow: visible;
+			padding-left: 16px;
+			padding-right: 16px;
+		}
+
+		#er.card {
+			background-color: #81C4EB;
+		}
+
+		#er-ristrutturato.card {
+			background-color: #8EE4EB;
+		}
+
+		#script-cpp.card {
+			background-color: #81EBD4;
+		}
+
+		#relazione.card {
+			background-color: #81EBB4;
+		}
+
+		footer.card {
+			background-color: #414141;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			order: 6;
+			padding-bottom: 0;
+			color: white;
+			width: 100%;
+			height: 100px;
+		}
+
 		#er {
 			order: 2;
 		}
+
 		#er-ristrutturato {
 			order: 3;
 		}
+
 		#script-cpp {
 			order: 4;
 		}
+
+		#relazione {
+			order: 5;
+		}
+
+		#relazione embed {
+			width: 100%;
+			height: 100%;
+			height: 900px;
+			border-radius: 16px;
+		}
+
 		.schema img {
 			width: 100%;
 			height: auto;
 		}
 
 		.code pre {
+			margin: 0;
+			padding: 0;
+			padding-left: 16px;
+			padding-top: 16px;
 			height: 600px;
 			text-align: left;
+			border-radius: 16px;
+			box-sizing: border-box;
 			overflow-x: scroll;
 			overflow-y: scroll;
 		}
-		footer {
-			width: 100%;
-		}
 	</style>
-	<link
-		rel="stylesheet"
-		type="text/css"
-		href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/vs2015.min.css"
-	/>
+	<link rel="stylesheet" type="text/css"
+		href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/vs2015.min.css" />
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@2.6.347/build/pdf.min.js"></script>
 </head>
 <html>
-	<body>
-		<div class="c">
+
+<body>
+	<div class="c">
+		<div class="card" style="background-color: #8CB4FF; border-radius: 0; border:0;">
 			<h1>WeCare</h1>
 			<div class="toc">
 				<ul>
 					<li><a href="#er">Schema E/R</a></li>
 					<li><a href="#er-ristrutturato">Schema Ristrutturato</a></li>
 					<li><a href="#script-cpp">script.cpp</a></li>
+					<li><a href="#relazione">Relazione</a></li>
 				</ul>
 			</div>
-			<div class="d1"></div>
-			<div class="d2"></div>
-			<div id="er" class="schema">
-				<h3>Schema E/R</h3>
-				<a href="WeCare.svg">
-					<img alt="Schema E/R" src="WeCare.svg" />
-				</a>
-			</div>
-			<div id="er-ristrutturato" class="schema">
-				<h3>Schema E/R Ristrutturato</h3>
-				<a href="WeCare-ristrutturato.svg">
-					<img alt="Schema E/R Ristrutturato" src="WeCare-ristrutturato.svg" />
-				</a>
-			</div>
-			<div id="script-cpp" class="code">
-				<h3>script.cpp</h3>
-				<pre id="cpp" class="language-cpp hljs"></pre>
-			</div>
-			<footer></footer>
 		</div>
-		<script>
-			function escapeHtml(unsafe) {
-				return;
-			}
-			fetch('script.cpp').then((res) =>
-				res.text().then((data) => {
-					let block = document.getElementById('cpp');
-					block.innerHTML = data
-						.replace(/&/g, '&amp;')
-						.replace(/</g, '&lt;')
-						.replace(/>/g, '&gt;')
-						.replace(/"/g, '&quot;')
-						.replace(/'/g, '&#039;');
-					hljs.highlightBlock(block);
-				})
-			);
-		</script>
-	</body>
+		<div id="er" class="schema card">
+			<h3>Schema E/R</h3>
+			<a href="WeCare.svg">
+				<img alt="Schema E/R" src="WeCare.svg" />
+			</a>
+		</div>
+		<div id="er-ristrutturato" class="schema card">
+			<h3>Schema E/R Ristrutturato</h3>
+			<a href="WeCare-ristrutturato.svg">
+				<img alt="Schema E/R Ristrutturato" src="WeCare-ristrutturato.svg" />
+			</a>
+		</div>
+		<div id="script-cpp" class="code card">
+			<h3>script.cpp</h3>
+			<pre id="cpp" class="language-cpp hljs"></pre>
+		</div>
+		<div id="relazione" class="card">
+			<a href="./WeCare.pdf">
+				<h3>Relazione</h3>
+			</a>
+			<embed src="./WeCare.pdf" type="application/pdf" />
+		</div>
+		<footer class="card">
+			Dardouri Leila - Furlan Dario
+			<br />2020
+		</footer>
+	</div>
+	<script>
+		function escapeHtml(unsafe) {
+			return;
+		}
+		fetch('script.cpp').then((res) =>
+			res.text().then((data) => {
+				let block = document.getElementById('cpp');
+				block.innerHTML = data
+					.replace(/&/g, '&amp;')
+					.replace(/</g, '&lt;')
+					.replace(/>/g, '&gt;')
+					.replace(/"/g, '&quot;')
+					.replace(/'/g, '&#039;');
+				hljs.highlightBlock(block);
+			})
+		);
+	</script>
+</body>
+
 </html>
