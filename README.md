@@ -1,1 +1,1 @@
-# Progetto Basi Dati 2020
+# Progetto di Basi di Dati, 2020 - 2021
